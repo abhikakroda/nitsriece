@@ -6,7 +6,7 @@ export interface AttendanceRecord {
   [key: string]: 'present' | 'absent';
 }
 
-function getAll(): AttendanceRecord {
+export function getAll(): AttendanceRecord {
   try {
     return JSON.parse(localStorage.getItem(ATTENDANCE_KEY) || '{}');
   } catch {
