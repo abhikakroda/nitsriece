@@ -76,7 +76,7 @@ const Profile: React.FC = () => {
                         style={{ width: `${stats.percentage}%` }}
                       />
                     </div>
-                    <span className={`text-[11px] font-bold min-w-[28px] text-right ${stats.percentage >= 75 ? 'text-green-600' : 'text-red-500'}`}>
+                    <span className={`text-[11px] font-bold min-w-[28px] text-right ${stats.percentage >= 75 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
                       {stats.percentage}%
                     </span>
                   </div>

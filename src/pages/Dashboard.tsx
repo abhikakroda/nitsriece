@@ -38,11 +38,19 @@ const Dashboard: React.FC = () => {
   // Count weekly classes from timetable
   const weeklyTotal = Object.values(timetableData).reduce((a, d) => a + d.length, 0);
 
+  const subjectCardColors = [
+    { bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200/60 dark:border-amber-700/30', text: 'text-amber-800 dark:text-amber-200', badgeBorder: 'border-amber-300 dark:border-amber-600/40 text-amber-700 dark:text-amber-300' },
+    { bg: 'bg-purple-50 dark:bg-purple-950/40', border: 'border-purple-200/60 dark:border-purple-700/30', text: 'text-purple-800 dark:text-purple-200', badgeBorder: 'border-purple-300 dark:border-purple-600/40 text-purple-700 dark:text-purple-300' },
+    { bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200/60 dark:border-emerald-700/30', text: 'text-emerald-800 dark:text-emerald-200', badgeBorder: 'border-emerald-300 dark:border-emerald-600/40 text-emerald-700 dark:text-emerald-300' },
+    { bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200/60 dark:border-blue-700/30', text: 'text-blue-800 dark:text-blue-200', badgeBorder: 'border-blue-300 dark:border-blue-600/40 text-blue-700 dark:text-blue-300' },
+    { bg: 'bg-rose-50 dark:bg-rose-950/40', border: 'border-rose-200/60 dark:border-rose-700/30', text: 'text-rose-800 dark:text-rose-200', badgeBorder: 'border-rose-300 dark:border-rose-600/40 text-rose-700 dark:text-rose-300' },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6 relative overflow-x-hidden">
       {/* Ambient blobs */}
-      <div className="liquid-blob top-[-6%] right-[-15%] w-[300px] h-[300px] bg-primary/8 dark:bg-primary/6 rounded-full filter blur-[100px] animate-blob will-change-transform pointer-events-none" />
-      <div className="liquid-blob bottom-[10%] left-[-10%] w-[250px] h-[250px] bg-violet-400/8 dark:bg-violet-500/5 rounded-full filter blur-[100px] animate-blob animation-delay-4000 will-change-transform pointer-events-none" />
+      <div className="liquid-blob top-[-6%] right-[-15%] w-[300px] h-[300px] bg-primary/10 dark:bg-primary/8 rounded-full filter blur-[100px] animate-blob will-change-transform pointer-events-none" />
+      <div className="liquid-blob bottom-[10%] left-[-10%] w-[250px] h-[250px] bg-violet-400/10 dark:bg-violet-500/6 rounded-full filter blur-[100px] animate-blob animation-delay-4000 will-change-transform pointer-events-none" />
 
       <motion.div className="max-w-3xl mx-auto w-full relative z-10" variants={stagger} initial="hidden" animate="visible">
         {/* Greeting */}
@@ -63,7 +71,7 @@ const Dashboard: React.FC = () => {
               { label: 'Weekly', value: String(weeklyTotal), sub: 'Total' },
               { label: 'Attendance', value: totalClasses > 0 ? `${overallPercent}%` : 'N/A', sub: totalClasses > 0 ? 'Overall' : 'No data' },
             ].map((stat, i) => (
-              <div key={i} className="rounded-[14px] border border-border/60 dark:border-border/40 bg-card/50 dark:bg-card/30 p-3.5 md:p-4">
+              <div key={i} className="rounded-[14px] border border-border/50 bg-card/60 dark:bg-card/40 p-3.5 md:p-4">
                 <p className="text-[10px] md:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</p>
                 <p className="font-display text-[24px] md:text-[28px] font-bold text-foreground leading-none mt-1">{stat.value}</p>
                 <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">{stat.sub}</p>
@@ -158,44 +166,28 @@ const Dashboard: React.FC = () => {
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-5 space-y-2.5">
             {todayClasses.map((cls, idx) => {
               const status = getClassStatus(cls.startTime);
-              const colors = [
-                'bg-amber-50 dark:bg-amber-500/8 border-amber-200/60 dark:border-amber-500/15',
-                'bg-purple-50 dark:bg-purple-500/8 border-purple-200/60 dark:border-purple-500/15',
-                'bg-green-50 dark:bg-green-500/8 border-green-200/60 dark:border-green-500/15',
-                'bg-blue-50 dark:bg-blue-500/8 border-blue-200/60 dark:border-blue-500/15',
-                'bg-rose-50 dark:bg-rose-500/8 border-rose-200/60 dark:border-rose-500/15',
-              ];
-              const textColors = [
-                'text-amber-800 dark:text-amber-300',
-                'text-purple-800 dark:text-purple-300',
-                'text-green-800 dark:text-green-300',
-                'text-blue-800 dark:text-blue-300',
-                'text-rose-800 dark:text-rose-300',
-              ];
-              const colorIdx = idx % colors.length;
+              const colorIdx = idx % subjectCardColors.length;
+              const color = subjectCardColors[colorIdx];
 
               return (
                 <div
                   key={idx}
-                  className={`rounded-[16px] p-4 border transition-all duration-300 ${colors[colorIdx]} ${
+                  className={`rounded-[16px] p-4 border transition-all duration-300 ${color.bg} ${color.border} ${
                     status === 'done' ? 'opacity-40' : ''
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      {cls.type && (
-                        <span className={`text-[9px] font-bold py-0.5 px-2 rounded-full border uppercase tracking-wider mb-2 inline-block ${
-                          cls.type === 'Lab' ? 'border-purple-300 dark:border-purple-500/30 text-purple-600 dark:text-purple-400' : 'border-amber-300 dark:border-amber-500/30 text-amber-700 dark:text-amber-400'
-                        }`}>
+                      {cls.type ? (
+                        <span className={`text-[9px] font-bold py-0.5 px-2 rounded-full border uppercase tracking-wider mb-2 inline-block ${color.badgeBorder}`}>
                           {cls.type}
                         </span>
-                      )}
-                      {!cls.type && (
-                        <span className="text-[9px] font-bold py-0.5 px-2 rounded-full border border-amber-300 dark:border-amber-500/30 text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-2 inline-block">
+                      ) : (
+                        <span className={`text-[9px] font-bold py-0.5 px-2 rounded-full border uppercase tracking-wider mb-2 inline-block ${color.badgeBorder}`}>
                           Lecture
                         </span>
                       )}
-                      <h3 className={`font-display font-bold text-[16px] md:text-[18px] leading-tight mt-1 ${textColors[colorIdx]}`}>{cls.subject}</h3>
+                      <h3 className={`font-display font-bold text-[16px] md:text-[18px] leading-tight mt-1 ${color.text}`}>{cls.subject}</h3>
                       <div className="flex items-center gap-3 mt-2">
                         <p className="text-[11px] text-muted-foreground flex items-center gap-1">
                           <span className="material-symbols-outlined text-[14px]">person</span> {cls.faculty || 'TBA'}

@@ -139,9 +139,9 @@ const GpaCalculator: React.FC = () => {
                     </div>
                     {selected && (
                       <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        gradePoints[selected] >= 8 ? 'bg-green-500/8 text-green-600' :
-                        gradePoints[selected] >= 6 ? 'bg-yellow-500/8 text-yellow-600' :
-                        'bg-red-500/8 text-red-500'
+                        gradePoints[selected] >= 8 ? 'bg-green-500/10 text-green-600 dark:text-green-400' :
+                        gradePoints[selected] >= 6 ? 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400' :
+                        'bg-red-500/10 text-red-500 dark:text-red-400'
                       }`}>
                         {(sub.credits * gradePoints[selected])} pts
                       </div>
