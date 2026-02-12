@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Schedule from "./pages/Schedule";
 import Profile from "./pages/Profile";
 import GpaCalculator from "./pages/GpaCalculator";
+import AttendanceAnalytics from "./pages/AttendanceAnalytics";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 import PageTransition from "./components/PageTransition";
@@ -21,6 +22,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
         <Route path="/schedule" element={<PageTransition><Schedule /></PageTransition>} />
         <Route path="/gpa" element={<PageTransition><GpaCalculator /></PageTransition>} />
+        <Route path="/analytics" element={<PageTransition><AttendanceAnalytics /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
