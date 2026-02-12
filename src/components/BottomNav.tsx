@@ -16,7 +16,7 @@ const BottomNav: React.FC = () => {
   return (
     <>
       {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 glass-morphism border-t border-border/50 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <nav className="fixed bottom-0 left-0 right-0 z-50 liquid-glass-nav border-t border-border/30 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div className="flex items-center justify-around h-[56px] max-w-lg mx-auto">
           {tabs.map(tab => {
             const isActive = location.pathname === tab.path;
@@ -42,7 +42,7 @@ const BottomNav: React.FC = () => {
       </nav>
 
       {/* Desktop sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 z-50 w-[220px] flex-col bg-card/60 backdrop-blur-2xl border-r border-border/50 py-6 px-3">
+      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 z-50 w-[220px] flex-col liquid-glass-nav border-r border-border/30 py-6 px-3">
         <div className="flex items-center gap-2.5 px-3 mb-10">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center shadow-md shadow-primary/20">
             <span className="material-symbols-outlined text-white text-[18px]">school</span>
