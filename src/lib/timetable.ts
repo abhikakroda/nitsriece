@@ -15,25 +15,27 @@ export type Day = typeof days[number];
 
 export const timetableData: Record<Day, ClassSlot[]> = {
   Mon: [
-    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500', faculty: 'Dr. Kajal' },
-    { subject: 'VLSI Design Lab (G3)', time: '09:50 – 10:40', startTime: '09:50', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab', faculty: 'Dr. Brajendra & Dr. Aamir' },
-    { subject: 'DSP Lab-I (G3)', time: '11:30 – 12:20', startTime: '11:30', room: 'Lab', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', type: 'Lab', faculty: 'Dr. Mahroosh Banday' },
-    { subject: 'Elective-II', time: '12:20 – 01:10', startTime: '12:20', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
-    { subject: 'IE-2', time: '01:10 – 02:00', startTime: '13:10', room: 'L-15', icon: 'school', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500', faculty: 'Dr. Arshid' },
+    { subject: 'Computer Org & Arch', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500', faculty: 'Dr. Kajal' },
+    { subject: 'VLSI Design Lab', time: '10:40 – 12:20', startTime: '10:40', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab', faculty: 'Dr. S.A. Ahsan' },
+    { subject: 'DSP Lab', time: '02:00 – 03:40', startTime: '14:00', room: 'Lab', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', type: 'Lab', faculty: 'Dr. Omkar Singh' },
+    { subject: 'VLSI Technology (Elective-II)', time: '03:40 – 04:30', startTime: '15:40', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500', faculty: 'Dr. Bisma Bilal' },
   ],
   Tue: [
-    { subject: 'Data Comm. & Networking', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500', faculty: 'Dr. Yusra Banday' },
-    { subject: 'VLSI Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', faculty: 'Dr. S.A. Ahsan' },
+    { subject: 'VLSI Design', time: '09:50 – 11:30', startTime: '09:50', room: 'L-15', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', faculty: 'Dr. S.A. Ahsan' },
+    { subject: 'Digital Signal Processing', time: '11:30 – 01:10', startTime: '11:30', room: 'L-15', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', faculty: 'Dr. Omkar Singh' },
   ],
   Wed: [
-    { subject: 'Digital Signal Processing', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', faculty: 'Dr. Omkar Singh' },
+    { subject: 'Data Comm. & Networking', time: '09:00 – 10:40', startTime: '09:00', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500', faculty: 'Dr. Yusra Banday' },
+    { subject: 'Digital Signal Processing', time: '10:40 – 11:30', startTime: '10:40', room: 'L-15', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', faculty: 'Dr. Omkar Singh' },
+    { subject: 'VLSI Design', time: '11:30 – 12:20', startTime: '11:30', room: 'L-15', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', faculty: 'Dr. S.A. Ahsan' },
+    { subject: 'VLSI Technology (Elective-II)', time: '03:40 – 04:30', startTime: '15:40', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500', faculty: 'Dr. Bisma Bilal' },
   ],
   Thu: [
-    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500', faculty: 'Dr. Kajal' },
-    { subject: 'Data Comm. & Networking', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500', faculty: 'Dr. Yusra Banday' },
+    { subject: 'Computer Org & Arch', time: '09:50 – 11:30', startTime: '09:50', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500', faculty: 'Dr. Kajal' },
+    { subject: 'Data Comm. & Networking', time: '11:30 – 12:20', startTime: '11:30', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500', faculty: 'Dr. Yusra Banday' },
   ],
   Fri: [
-    { subject: 'RF Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'settings_input_antenna', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500', faculty: 'Prof. Najeeb-ud-din' },
+    { subject: 'VLSI Technology (Elective-II)', time: '03:40 – 04:30', startTime: '15:40', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500', faculty: 'Dr. Bisma Bilal' },
   ],
 };
 
