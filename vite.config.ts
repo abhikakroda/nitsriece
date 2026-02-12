@@ -19,9 +19,9 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "robots.txt"],
       manifest: {
-        name: "Campus Companion",
-        short_name: "Campus",
-        description: "Your college life, organized. PWA for ECE students.",
+        name: "Time Table",
+        short_name: "Time Table",
+        description: "Your college timetable and attendance tracker.",
         theme_color: "#3b82f6",
         background_color: "#f8fafc",
         display: "standalone",
