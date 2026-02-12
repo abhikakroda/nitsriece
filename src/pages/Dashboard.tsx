@@ -112,30 +112,6 @@ const Dashboard: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Attendance Status Banner */}
-        {totalClasses > 0 && (
-          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-4">
-            <div className={`rounded-[14px] p-4 border ${
-              isAbove75 
-                ? 'bg-green-500/6 dark:bg-green-500/8 border-green-500/15' 
-                : 'bg-red-500/6 dark:bg-red-500/8 border-red-500/15'
-            }`}>
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`material-symbols-outlined text-[18px] ${isAbove75 ? 'text-green-500' : 'text-red-500'}`}>
-                  {isAbove75 ? 'verified' : 'warning'}
-                </span>
-                <p className={`text-[13px] font-bold ${isAbove75 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                  {isAbove75 ? 'All Clear' : 'Attendance Low'}
-                </p>
-              </div>
-              <p className="text-muted-foreground text-[12px]">
-                {isAbove75 
-                  ? 'You are above the required attendance. Keep the streak going.' 
-                  : 'Your attendance is below 75%. Try not to miss more classes.'}
-              </p>
-            </div>
-          </motion.div>
-        )}
 
         {/* Today's Classes */}
         <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
