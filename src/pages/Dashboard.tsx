@@ -84,7 +84,7 @@ const Dashboard: React.FC = () => {
         {localStorage.getItem('hideExamCountdown') !== 'true' && (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-4">
             {(() => {
-              const examDate = new Date('2025-04-01T00:00:00');
+              const examDate = new Date('2026-04-01T00:00:00');
               const now = new Date();
               const diffMs = examDate.getTime() - now.getTime();
               const totalDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
                       {totalDays > 0 ? `${totalDays} days to go` : 'Exams have started!'}
                     </h3>
                     <p className="text-white/60 text-[12px] mt-1.5">
-                      {totalDays > 0 ? `${weeks} weeks and ${remainingDays} days remaining` : 'Good luck!'} • April 1, 2025
+                      {totalDays > 0 ? `${weeks} weeks and ${remainingDays} days remaining` : 'Good luck!'} • April 1, 2026
                     </p>
                   </div>
                   <div className="absolute right-[-20px] bottom-[-30px] w-40 h-40 bg-white/8 rounded-full blur-2xl" />
