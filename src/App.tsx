@@ -34,7 +34,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="lg:pl-[220px]">
+        <div className="lg:pl-[240px]">
           <AnimatedRoutes />
         </div>
         <BottomNav />

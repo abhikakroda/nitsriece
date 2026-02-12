@@ -1,7 +1,18 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { requestNotificationPermission } from '@/lib/notifications';
 import { getTodayClasses, getClassStatus, dayNames, getTodayDay } from '@/lib/timetable';
+
+const stagger = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] } },
+};
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -10,151 +21,164 @@ const Dashboard: React.FC = () => {
     requestNotificationPermission();
   }, []);
 
+  const todayClasses = getTodayClasses();
+  const todayDay = getTodayDay();
+
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6 relative overflow-x-hidden">
-
       {/* Liquid Blobs */}
-      <div className="liquid-blob top-[-10%] left-[-10%] w-72 h-72 bg-purple-400/30 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
-      <div className="liquid-blob top-[20%] right-[-10%] w-64 h-64 bg-cyan-300/30 dark:bg-cyan-900/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
-      <div className="liquid-blob bottom-[-10%] left-[20%] w-80 h-80 bg-pink-300/30 dark:bg-pink-900/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
+      <div className="liquid-blob top-[-8%] left-[-8%] w-80 h-80 bg-primary/15 dark:bg-primary/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob" />
+      <div className="liquid-blob top-[25%] right-[-8%] w-72 h-72 bg-blue-400/15 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000" />
+      <div className="liquid-blob bottom-[-5%] left-[25%] w-96 h-96 bg-violet-300/12 dark:bg-violet-500/8 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000" />
 
       {/* Header */}
-      <div className="sticky top-0 z-50 glass-morphism px-4 md:px-6 py-3 flex items-center justify-between border-b border-border">
+      <div className="sticky top-0 z-50 glass-morphism px-4 md:px-6 py-3.5 flex items-center justify-between border-b border-border/60">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-md lg:hidden">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary via-primary to-blue-500 flex items-center justify-center shadow-lg shadow-primary/25 lg:hidden">
             <span className="material-symbols-outlined text-white text-[20px]">school</span>
           </div>
           <div>
-            <h2 className="text-foreground text-[15px] md:text-[17px] font-bold leading-tight">Campus Companion</h2>
-            <p className="text-primary text-[11px] md:text-[12px] font-bold tracking-wide">ECE • 6th Sem - Sec B</p>
+            <h2 className="text-foreground text-[15px] md:text-[17px] font-extrabold leading-tight tracking-tight">Campus Companion</h2>
+            <p className="text-primary text-[11px] md:text-[12px] font-bold tracking-wider">ECE • 6th Sem - Sec B</p>
           </div>
         </div>
         <button
           onClick={() => navigate('/profile')}
-          className="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 text-primary border border-primary/10 active:scale-95 transition-transform lg:hidden"
+          className="flex items-center justify-center rounded-2xl h-10 w-10 bg-secondary text-muted-foreground hover:text-foreground active:scale-90 transition-all duration-200 lg:hidden"
         >
-          <span className="material-symbols-outlined text-[22px]">settings</span>
+          <span className="material-symbols-outlined text-[20px]">settings</span>
         </button>
       </div>
 
-      <div className="max-w-3xl mx-auto w-full">
-        <div className="px-4 md:px-6 pt-4 pb-1 relative z-10">
-          <p className="text-muted-foreground text-[11px] md:text-[12px] font-bold uppercase tracking-widest">
+      <motion.div className="max-w-3xl mx-auto w-full" variants={stagger} initial="hidden" animate="visible">
+        <motion.div variants={fadeUp} className="px-4 md:px-6 pt-5 pb-2 relative z-10">
+          <p className="text-muted-foreground text-[11px] md:text-[12px] font-bold uppercase tracking-[0.15em]">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </p>
-          <h1 className="text-2xl md:text-3xl font-black text-foreground tracking-tight mt-0.5">Daily Schedule</h1>
-        </div>
+          <h1 className="text-[26px] md:text-[32px] font-black text-foreground tracking-tight mt-0.5 leading-tight">
+            Good {new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 17 ? 'Afternoon' : 'Evening'} 👋
+          </h1>
+        </motion.div>
 
-        {/* Notices Card */}
-        <div className="px-4 md:px-6 pb-5 relative z-10">
-          <div className="bg-gradient-to-br from-primary to-blue-600 rounded-2xl p-5 md:p-6 text-white shadow-lg shadow-primary/20 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
+        {/* Hero Notice Card */}
+        <motion.div variants={fadeUp} className="px-4 md:px-6 pb-5 relative z-10">
+          <div className="bg-gradient-to-br from-primary via-blue-600 to-violet-600 rounded-3xl p-5 md:p-6 text-white shadow-xl shadow-primary/15 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
+            <div className="absolute inset-0 animate-shimmer" />
             <div className="relative z-10 flex justify-between items-start mb-4">
               <div>
-                <p className="text-blue-100 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mb-1">Latest Update</p>
-                <h3 className="text-xl md:text-2xl font-bold leading-tight">Sessional Exams</h3>
+                <p className="text-white/70 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Latest Update</p>
+                <h3 className="text-[22px] md:text-[24px] font-extrabold leading-tight">Sessional Exams</h3>
               </div>
-              <div className="bg-white/20 p-2 rounded-xl backdrop-blur-md border border-white/10 animate-pulse-glow">
-                <span className="material-symbols-outlined text-[20px]">campaign</span>
+              <div className="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 animate-float">
+                <span className="material-symbols-outlined text-[22px]">campaign</span>
               </div>
             </div>
             <div className="relative z-10 space-y-2">
-              <div className="bg-white/10 rounded-xl p-2.5 flex items-center gap-2.5 border border-white/5 backdrop-blur-sm">
+              <div className="bg-white/12 rounded-2xl p-3 flex items-center gap-3 border border-white/8 backdrop-blur-sm">
                 <span className="material-symbols-outlined text-[18px]">event</span>
                 <p className="text-[13px] md:text-[14px] font-semibold">Date Sheet Released for Jan 2026</p>
               </div>
-              <p className="text-[11px] text-blue-50 font-medium ml-1">Check resources for PDF.</p>
+              <p className="text-[11px] text-white/60 font-medium ml-1">Check resources for PDF.</p>
             </div>
-            <div className="absolute right-[-20px] bottom-[-40px] w-48 h-48 bg-white/10 rounded-full blur-3xl opacity-50" />
+            <div className="absolute right-[-30px] bottom-[-50px] w-56 h-56 bg-white/8 rounded-full blur-3xl" />
+            <div className="absolute left-[-20px] top-[-30px] w-40 h-40 bg-violet-400/15 rounded-full blur-3xl" />
           </div>
-        </div>
+        </motion.div>
 
-        {/* Today's Timetable Preview + Resources in grid on desktop */}
+        {/* Today's Timetable + Resources grid */}
         <div className="md:grid md:grid-cols-2 md:gap-5 px-4 md:px-6">
-          {/* Today's Timetable Preview */}
-          <div className="space-y-3 mb-5 md:mb-0">
+          {/* Today's Timetable */}
+          <motion.div variants={fadeUp} className="space-y-3 mb-5 md:mb-0">
             <div className="flex items-center justify-between mb-1">
-              <h2 className="text-base md:text-lg font-bold text-foreground">Today's Timetable</h2>
-              <button onClick={() => navigate('/schedule')} className="text-primary text-[11px] md:text-[12px] font-bold active:opacity-70">View Full Week →</button>
+              <h2 className="text-[15px] md:text-[17px] font-extrabold text-foreground tracking-tight">Today's Classes</h2>
+              <button onClick={() => navigate('/schedule')} className="text-primary text-[11px] md:text-[12px] font-bold active:opacity-70 hover:underline underline-offset-2">
+                Full Week →
+              </button>
             </div>
 
-            {(() => {
-              const todayClasses = getTodayClasses();
-              if (todayClasses.length === 0) {
-                return (
-                  <div className="bg-card rounded-2xl p-6 border border-border text-center">
-                    <span className="material-symbols-outlined text-[40px] text-muted-foreground/30 mb-2">event_available</span>
-                    <p className="text-muted-foreground font-medium text-[14px]">No classes today!</p>
-                    <p className="text-muted-foreground/60 text-[12px] mt-1">Enjoy your {dayNames[getTodayDay()]} 🎉</p>
-                  </div>
-                );
-              }
-              return todayClasses.map((cls, idx) => {
+            {todayClasses.length === 0 ? (
+              <div className="bg-card card-elevated rounded-3xl p-8 border border-border text-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/8 flex items-center justify-center mx-auto mb-3">
+                  <span className="material-symbols-outlined text-[28px] text-primary/40">event_available</span>
+                </div>
+                <p className="text-foreground font-bold text-[15px]">No classes today!</p>
+                <p className="text-muted-foreground text-[12px] mt-1">Enjoy your {dayNames[todayDay]} 🎉</p>
+              </div>
+            ) : (
+              todayClasses.map((cls, idx) => {
                 const status = getClassStatus(cls.startTime);
                 return (
-                  <div key={idx} className={`bg-card rounded-2xl p-4 border relative overflow-hidden ${
-                    status === 'current' ? 'border-primary/30 shadow-sm' : status === 'done' ? 'border-border opacity-50' : 'border-border opacity-70'
-                  }`}>
+                  <motion.div
+                    key={idx}
+                    variants={fadeUp}
+                    className={`bg-card card-elevated rounded-2xl p-4 border relative overflow-hidden transition-all duration-300 ${
+                      status === 'current'
+                        ? 'border-primary/25 ring-1 ring-primary/10 shadow-lg shadow-primary/5'
+                        : status === 'done'
+                        ? 'border-border opacity-45'
+                        : 'border-border/80'
+                    }`}
+                  >
                     {status === 'current' && (
-                      <div className="absolute top-2 right-2 opacity-[0.04]">
-                        <span className="material-symbols-outlined text-[80px]">{cls.icon}</span>
-                      </div>
+                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-blue-500 to-violet-500" />
                     )}
                     <div className="flex items-start justify-between relative z-10">
                       <div className="flex gap-3">
-                        <div className={`size-10 rounded-xl ${cls.iconBg} ${cls.iconColor} flex items-center justify-center shrink-0`}>
+                        <div className={`size-11 rounded-2xl ${cls.iconBg} ${cls.iconColor} flex items-center justify-center shrink-0 ${status === 'current' ? 'shadow-sm' : ''}`}>
                           <span className="material-symbols-outlined text-[20px]">{cls.icon}</span>
                         </div>
                         <div>
                           <h3 className="font-bold text-foreground text-[14px] leading-tight">{cls.subject}</h3>
-                          <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px]">schedule</span> {cls.time}
-                          </p>
-                          <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[13px]">location_on</span> {cls.room}
-                          </p>
+                          <div className="flex items-center gap-3 mt-1.5">
+                            <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[12px]">schedule</span> {cls.time}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[12px]">location_on</span> {cls.room}
+                            </p>
+                          </div>
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-1">
                         {cls.type && (
                           <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 uppercase">{cls.type}</span>
                         )}
-                        <span className={`text-[9px] font-bold py-0.5 px-2 rounded-full uppercase ${
-                          status === 'current' ? 'bg-green-500/10 text-green-600 border border-green-500/20 animate-pulse'
+                        <span className={`text-[9px] font-bold py-1 px-2.5 rounded-full uppercase tracking-wide ${
+                          status === 'current' ? 'bg-primary/10 text-primary animate-pulse'
                           : status === 'done' ? 'bg-secondary text-muted-foreground'
                           : 'bg-secondary text-muted-foreground'
                         }`}>
-                          {status === 'current' ? 'Current' : status === 'done' ? 'Done' : 'Upcoming'}
+                          {status === 'current' ? '● Live' : status === 'done' ? 'Done' : 'Next'}
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
-              });
-            })()}
-          </div>
+              })
+            )}
+          </motion.div>
 
-          {/* Resources + Quick Access column */}
-          <div>
-            {/* Resources */}
+          {/* Resources + Quick Access */}
+          <motion.div variants={fadeUp}>
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2.5">
-                <h3 className="text-[13px] md:text-[14px] font-bold text-foreground">Recent Resources</h3>
-                <button className="text-primary text-[11px] font-bold">View All</button>
+                <h3 className="text-[14px] md:text-[15px] font-extrabold text-foreground tracking-tight">Resources</h3>
+                <button className="text-primary text-[11px] font-bold hover:underline underline-offset-2">View All</button>
               </div>
-              <div className="bg-card rounded-2xl border border-border divide-y divide-border overflow-hidden">
+              <div className="bg-card card-elevated rounded-2xl border border-border/80 divide-y divide-border/60 overflow-hidden">
                 {[
-                  { icon: 'picture_as_pdf', color: 'text-red-500 bg-red-50 dark:bg-red-900/20', title: 'VLSI Unit 2 Notes', sub: 'Uploaded yesterday' },
-                  { icon: 'description', color: 'text-blue-500 bg-blue-50 dark:bg-blue-900/20', title: 'DSP Assignment 3', sub: 'Due in 2 days' },
+                  { icon: 'picture_as_pdf', color: 'text-red-500 bg-red-500/10', title: 'VLSI Unit 2 Notes', sub: 'Uploaded yesterday' },
+                  { icon: 'description', color: 'text-blue-500 bg-blue-500/10', title: 'DSP Assignment 3', sub: 'Due in 2 days' },
                 ].map((r, idx) => (
-                  <div key={idx} className="flex items-center gap-3 p-3.5 active:bg-accent transition-colors cursor-pointer">
-                    <div className={`size-9 rounded-lg flex items-center justify-center shrink-0 ${r.color}`}>
+                  <div key={idx} className="flex items-center gap-3 p-3.5 active:bg-accent/50 hover:bg-accent/30 transition-colors cursor-pointer">
+                    <div className={`size-10 rounded-xl flex items-center justify-center shrink-0 ${r.color}`}>
                       <span className="material-symbols-outlined text-[18px]">{r.icon}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-[13px] font-bold text-foreground">{r.title}</h4>
                       <p className="text-[11px] text-muted-foreground">{r.sub}</p>
                     </div>
-                    <span className="material-symbols-outlined text-muted-foreground text-[20px]">download</span>
+                    <span className="material-symbols-outlined text-muted-foreground/50 text-[18px]">chevron_right</span>
                   </div>
                 ))}
               </div>
@@ -162,29 +186,34 @@ const Dashboard: React.FC = () => {
 
             {/* Quick Access */}
             <div className="grid grid-cols-2 gap-3 pb-6">
-              <div onClick={() => navigate('/schedule')} className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-slate-700 h-[120px] relative overflow-hidden group active:scale-95 transition-transform">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-active:opacity-100 transition-opacity" />
-                <div className="size-9 rounded-xl bg-white/10 flex items-center justify-center relative z-10">
+              <div
+                onClick={() => navigate('/schedule')}
+                className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 rounded-2xl flex flex-col justify-between cursor-pointer h-[130px] relative overflow-hidden group active:scale-[0.96] transition-all duration-200 shadow-lg shadow-slate-900/10"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-violet-500/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="size-10 rounded-xl bg-white/10 flex items-center justify-center relative z-10 backdrop-blur-sm">
                   <span className="material-symbols-outlined text-[20px]">calendar_today</span>
                 </div>
                 <div className="relative z-10">
-                  <h3 className="font-bold text-white text-[13px] leading-tight">Weekly Schedule</h3>
-                  <p className="text-[10px] text-slate-300 mt-0.5 font-medium">View Timetable</p>
+                  <h3 className="font-bold text-white text-[14px] leading-tight">Schedule</h3>
+                  <p className="text-[10px] text-white/50 mt-0.5 font-medium">Weekly Timetable</p>
                 </div>
               </div>
-              <div className="bg-teal-50 dark:bg-teal-900/10 p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-teal-100 dark:border-teal-800 h-[120px] active:scale-95 transition-transform">
-                <div className="size-9 rounded-xl bg-teal-500 text-white flex items-center justify-center shadow-sm">
+              <div
+                className="bg-gradient-to-br from-primary/8 to-violet-500/8 dark:from-primary/12 dark:to-violet-500/12 p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-primary/10 h-[130px] active:scale-[0.96] transition-all duration-200"
+              >
+                <div className="size-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-md shadow-primary/20">
                   <span className="material-symbols-outlined text-[20px]">calculate</span>
                 </div>
                 <div>
-                  <h3 className="font-bold text-teal-900 dark:text-teal-100 text-[13px] leading-tight">GPA Estimator</h3>
-                  <p className="text-[10px] text-teal-600 dark:text-teal-300 mt-0.5 font-medium">Calculate SGPA</p>
+                  <h3 className="font-bold text-foreground text-[14px] leading-tight">GPA Calc</h3>
+                  <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">Estimate SGPA</p>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
