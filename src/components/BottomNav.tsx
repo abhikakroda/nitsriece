@@ -2,17 +2,15 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const tabs = [
-  { path: '/', icon: 'home', iconFilled: 'home', label: 'Home' },
-  { path: '/focus', icon: 'timer', iconFilled: 'timer', label: 'Focus' },
-  { path: '/placements', icon: 'trending_up', iconFilled: 'trending_up', label: 'Stats' },
-  { path: '/profile', icon: 'person', iconFilled: 'person', label: 'Profile' },
+  { path: '/', icon: 'home', label: 'Home' },
+  { path: '/schedule', icon: 'calendar_today', label: 'Schedule' },
+  { path: '/placements', icon: 'trending_up', label: 'Stats' },
+  { path: '/profile', icon: 'person', label: 'Profile' },
 ];
 
 const BottomNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  if (location.pathname === '/focus') return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 glass-morphism border-t border-border" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>

@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
       {/* Quick Access */}
       <div className="px-4 pb-6 grid grid-cols-2 gap-3">
         {[
-          { path: '/focus', icon: 'timer', label: 'Focus Mode', sub: 'Start Pomodoro', dark: true },
+          { path: '/schedule', icon: 'calendar_today', label: 'Weekly Schedule', sub: 'View Timetable', dark: true },
           { path: '/placements', icon: 'business_center', label: 'Placement Cell', sub: 'Drives & Prep', bg: 'bg-blue-50 dark:bg-blue-900/10', border: 'border-blue-100 dark:border-blue-800', iconBg: 'bg-blue-500', textColor: 'text-blue-900 dark:text-blue-100', subColor: 'text-blue-600 dark:text-blue-300' },
           { path: '/faculty', icon: 'school', label: 'Faculty', sub: 'Contact Professors', bg: 'bg-amber-50 dark:bg-amber-900/10', border: 'border-amber-100 dark:border-amber-800', iconBg: 'bg-amber-500', textColor: 'text-amber-900 dark:text-amber-100', subColor: 'text-amber-600 dark:text-amber-300' },
           { icon: 'calculate', label: 'GPA Estimator', sub: 'Calculate SGPA', bg: 'bg-teal-50 dark:bg-teal-900/10', border: 'border-teal-100 dark:border-teal-800', iconBg: 'bg-teal-500', textColor: 'text-teal-900 dark:text-teal-100', subColor: 'text-teal-600 dark:text-teal-300' },

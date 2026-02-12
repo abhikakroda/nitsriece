@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Dashboard from "./pages/Dashboard";
-import Focus from "./pages/Focus";
+import Schedule from "./pages/Schedule";
 import Faculty from "./pages/Faculty";
 import Placements from "./pages/Placements";
 import Profile from "./pages/Profile";
@@ -22,7 +22,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
-        <Route path="/focus" element={<PageTransition><Focus /></PageTransition>} />
+        <Route path="/schedule" element={<PageTransition><Schedule /></PageTransition>} />
         <Route path="/faculty" element={<PageTransition><Faculty /></PageTransition>} />
         <Route path="/placements" element={<PageTransition><Placements /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
