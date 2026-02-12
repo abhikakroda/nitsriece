@@ -62,27 +62,45 @@ const Dashboard: React.FC = () => {
 
         {/* Hero Notice Card */}
         <motion.div variants={fadeUp} className="px-4 md:px-6 pb-5 relative z-10">
-          <div className="bg-gradient-to-br from-primary via-blue-600 to-violet-600 rounded-3xl p-5 md:p-6 text-white shadow-xl shadow-primary/15 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
-            <div className="absolute inset-0 animate-shimmer" />
-            <div className="relative z-10 flex justify-between items-start mb-4">
-              <div>
-                <p className="text-white/70 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Latest Update</p>
-                <h3 className="text-[22px] md:text-[24px] font-extrabold leading-tight">Sessional Exams</h3>
+          {(() => {
+            const examDate = new Date('2025-04-01T00:00:00');
+            const now = new Date();
+            const diffMs = examDate.getTime() - now.getTime();
+            const totalDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+            const weeks = Math.floor(totalDays / 7);
+            const days = totalDays % 7;
+            return (
+              <div className="bg-gradient-to-br from-primary via-blue-600 to-violet-600 rounded-3xl p-5 md:p-6 text-white shadow-xl shadow-primary/15 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
+                <div className="absolute inset-0 animate-shimmer" />
+                <div className="relative z-10 flex justify-between items-start mb-4">
+                  <div>
+                    <p className="text-white/70 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Sessional Exams</p>
+                    <h3 className="text-[22px] md:text-[24px] font-extrabold leading-tight">April 1, 2025</h3>
+                  </div>
+                  <div className="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 animate-float">
+                    <span className="material-symbols-outlined text-[22px]">timer</span>
+                  </div>
+                </div>
+                <div className="relative z-10 flex gap-2.5 mb-3">
+                  {[
+                    { value: totalDays, label: 'Days' },
+                    { value: weeks, label: 'Weeks' },
+                    { value: days, label: 'Days Left' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex-1 bg-white/12 rounded-2xl p-3 text-center border border-white/8 backdrop-blur-sm">
+                      <p className="text-[22px] md:text-[26px] font-black leading-none">{item.value}</p>
+                      <p className="text-[9px] md:text-[10px] font-semibold text-white/60 uppercase tracking-wider mt-1">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="relative z-10">
+                  <p className="text-[11px] text-white/60 font-medium ml-1">Date sheet released — check resources for PDF.</p>
+                </div>
+                <div className="absolute right-[-30px] bottom-[-50px] w-56 h-56 bg-white/8 rounded-full blur-3xl" />
+                <div className="absolute left-[-20px] top-[-30px] w-40 h-40 bg-violet-400/15 rounded-full blur-3xl" />
               </div>
-              <div className="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 animate-float">
-                <span className="material-symbols-outlined text-[22px]">campaign</span>
-              </div>
-            </div>
-            <div className="relative z-10 space-y-2">
-              <div className="bg-white/12 rounded-2xl p-3 flex items-center gap-3 border border-white/8 backdrop-blur-sm">
-                <span className="material-symbols-outlined text-[18px]">event</span>
-                <p className="text-[13px] md:text-[14px] font-semibold">Date Sheet Released for Jan 2026</p>
-              </div>
-              <p className="text-[11px] text-white/60 font-medium ml-1">Check resources for PDF.</p>
-            </div>
-            <div className="absolute right-[-30px] bottom-[-50px] w-56 h-56 bg-white/8 rounded-full blur-3xl" />
-            <div className="absolute left-[-20px] top-[-30px] w-40 h-40 bg-violet-400/15 rounded-full blur-3xl" />
-          </div>
+            );
+          })()}
         </motion.div>
 
         {/* Today's Timetable + Resources grid */}
