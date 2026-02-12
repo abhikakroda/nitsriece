@@ -31,24 +31,6 @@ const Dashboard: React.FC = () => {
       <div className="liquid-blob top-[25%] right-[-8%] w-72 h-72 bg-blue-400/15 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000" />
       <div className="liquid-blob bottom-[-5%] left-[25%] w-96 h-96 bg-violet-300/12 dark:bg-violet-500/8 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000" />
 
-      {/* Header */}
-      <div className="sticky top-0 z-50 glass-morphism px-4 md:px-6 py-3.5 flex items-center justify-between border-b border-border/60">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary via-primary to-blue-500 flex items-center justify-center shadow-lg shadow-primary/25 lg:hidden">
-            <span className="material-symbols-outlined text-white text-[20px]">school</span>
-          </div>
-          <div>
-            <h2 className="text-foreground text-[15px] md:text-[17px] font-extrabold leading-tight tracking-tight">Campus Companion</h2>
-            <p className="text-primary text-[11px] md:text-[12px] font-bold tracking-wider">ECE • 6th Sem - Sec B</p>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/profile')}
-          className="flex items-center justify-center rounded-2xl h-10 w-10 bg-secondary text-muted-foreground hover:text-foreground active:scale-90 transition-all duration-200 lg:hidden"
-        >
-          <span className="material-symbols-outlined text-[20px]">settings</span>
-        </button>
-      </div>
 
       <motion.div className="max-w-3xl mx-auto w-full" variants={stagger} initial="hidden" animate="visible">
         <motion.div variants={fadeUp} className="px-4 md:px-6 pt-5 pb-2 relative z-10">
@@ -61,47 +43,49 @@ const Dashboard: React.FC = () => {
         </motion.div>
 
         {/* Hero Notice Card */}
-        <motion.div variants={fadeUp} className="px-4 md:px-6 pb-5 relative z-10">
-          {(() => {
-            const examDate = new Date('2025-04-01T00:00:00');
-            const now = new Date();
-            const diffMs = examDate.getTime() - now.getTime();
-            const totalDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
-            const weeks = Math.floor(totalDays / 7);
-            const days = totalDays % 7;
-            return (
-              <div className="bg-gradient-to-br from-primary via-blue-600 to-violet-600 rounded-3xl p-5 md:p-6 text-white shadow-xl shadow-primary/15 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
-                <div className="absolute inset-0 animate-shimmer" />
-                <div className="relative z-10 flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-white/70 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Sessional Exams</p>
-                    <h3 className="text-[22px] md:text-[24px] font-extrabold leading-tight">April 1, 2025</h3>
-                  </div>
-                  <div className="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 animate-float">
-                    <span className="material-symbols-outlined text-[22px]">timer</span>
-                  </div>
-                </div>
-                <div className="relative z-10 flex gap-2.5 mb-3">
-                  {[
-                    { value: totalDays, label: 'Days' },
-                    { value: weeks, label: 'Weeks' },
-                    { value: days, label: 'Days Left' },
-                  ].map((item, i) => (
-                    <div key={i} className="flex-1 bg-white/12 rounded-2xl p-3 text-center border border-white/8 backdrop-blur-sm">
-                      <p className="text-[22px] md:text-[26px] font-black leading-none">{item.value}</p>
-                      <p className="text-[9px] md:text-[10px] font-semibold text-white/60 uppercase tracking-wider mt-1">{item.label}</p>
+        {localStorage.getItem('hideExamCountdown') !== 'true' && (
+          <motion.div variants={fadeUp} className="px-4 md:px-6 pb-5 relative z-10">
+            {(() => {
+              const examDate = new Date('2025-04-01T00:00:00');
+              const now = new Date();
+              const diffMs = examDate.getTime() - now.getTime();
+              const totalDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+              const weeks = Math.floor(totalDays / 7);
+              const days = totalDays % 7;
+              return (
+                <div className="bg-gradient-to-br from-primary via-blue-600 to-violet-600 rounded-3xl p-5 md:p-6 text-white shadow-xl shadow-primary/15 overflow-hidden relative cursor-pointer active:scale-[0.98] transition-transform group">
+                  <div className="absolute inset-0 animate-shimmer" />
+                  <div className="relative z-10 flex justify-between items-start mb-4">
+                    <div>
+                      <p className="text-white/70 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Sessional Exams</p>
+                      <h3 className="text-[22px] md:text-[24px] font-extrabold leading-tight">April 1, 2025</h3>
                     </div>
-                  ))}
+                    <div className="bg-white/15 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 animate-float">
+                      <span className="material-symbols-outlined text-[22px]">timer</span>
+                    </div>
+                  </div>
+                  <div className="relative z-10 flex gap-2.5 mb-3">
+                    {[
+                      { value: totalDays, label: 'Days' },
+                      { value: weeks, label: 'Weeks' },
+                      { value: days, label: 'Days Left' },
+                    ].map((item, i) => (
+                      <div key={i} className="flex-1 bg-white/12 rounded-2xl p-3 text-center border border-white/8 backdrop-blur-sm">
+                        <p className="text-[22px] md:text-[26px] font-black leading-none">{item.value}</p>
+                        <p className="text-[9px] md:text-[10px] font-semibold text-white/60 uppercase tracking-wider mt-1">{item.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="relative z-10">
+                    <p className="text-[11px] text-white/60 font-medium ml-1">Date sheet released — check resources for PDF.</p>
+                  </div>
+                  <div className="absolute right-[-30px] bottom-[-50px] w-56 h-56 bg-white/8 rounded-full blur-3xl" />
+                  <div className="absolute left-[-20px] top-[-30px] w-40 h-40 bg-violet-400/15 rounded-full blur-3xl" />
                 </div>
-                <div className="relative z-10">
-                  <p className="text-[11px] text-white/60 font-medium ml-1">Date sheet released — check resources for PDF.</p>
-                </div>
-                <div className="absolute right-[-30px] bottom-[-50px] w-56 h-56 bg-white/8 rounded-full blur-3xl" />
-                <div className="absolute left-[-20px] top-[-30px] w-40 h-40 bg-violet-400/15 rounded-full blur-3xl" />
-              </div>
-            );
-          })()}
-        </motion.div>
+              );
+            })()}
+          </motion.div>
+        )}
 
         {/* Today's Timetable + Resources grid */}
         <div className="md:grid md:grid-cols-2 md:gap-5 px-4 md:px-6">

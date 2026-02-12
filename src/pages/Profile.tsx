@@ -17,6 +17,7 @@ const stagger = {
 const Profile: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [hideExamCountdown, setHideExamCountdown] = useState(() => localStorage.getItem('hideExamCountdown') === 'true');
   const [attendanceStats, setAttendanceStats] = useState<Record<string, { present: number; absent: number; total: number; percentage: number }>>({});
 
   useEffect(() => {
@@ -71,6 +72,35 @@ const Profile: React.FC = () => {
             </div>
           </motion.section>
         )}
+
+        {/* Dashboard */}
+        <motion.section variants={fadeUp}>
+          <h3 className="text-muted-foreground text-[10px] md:text-[11px] font-bold uppercase tracking-[0.15em] px-1 mb-2.5">Dashboard</h3>
+          <div className="bg-card card-elevated rounded-2xl overflow-hidden border border-border/70">
+            <div className="flex items-center gap-3 px-4 py-4 justify-between cursor-pointer active:bg-accent/50 transition-colors" onClick={() => {
+              const current = localStorage.getItem('hideExamCountdown') === 'true';
+              localStorage.setItem('hideExamCountdown', String(!current));
+              setHideExamCountdown(!current);
+            }}>
+              <div className="flex items-center gap-3">
+                <div className="text-muted-foreground flex items-center justify-center rounded-2xl bg-secondary shrink-0 size-11">
+                  <span className="material-symbols-outlined text-[22px]">timer</span>
+                </div>
+                <div>
+                  <p className="text-foreground text-[14px] font-semibold">Exam Countdown</p>
+                  <p className="text-muted-foreground text-[11px]">Show countdown card on dashboard</p>
+                </div>
+              </div>
+              <div className={`relative w-12 h-[28px] rounded-full p-0.5 cursor-pointer transition-colors duration-300 ${!hideExamCountdown ? 'bg-primary' : 'bg-border'}`}>
+                <motion.div
+                  className="h-[24px] w-[24px] rounded-full bg-white shadow-sm"
+                  animate={{ x: !hideExamCountdown ? 19 : 0 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                />
+              </div>
+            </div>
+          </div>
+        </motion.section>
 
         {/* Two-column grid on desktop */}
         <div className="md:grid md:grid-cols-2 md:gap-5 space-y-5 md:space-y-0">
