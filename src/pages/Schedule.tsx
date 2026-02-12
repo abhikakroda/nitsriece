@@ -2,13 +2,13 @@ import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { markAttendance, getAttendance, getSubjectStats } from '@/lib/attendance';
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const;
 type Day = typeof days[number];
 
 interface ClassSlot {
   subject: string;
   time: string;
-  startTime: string; // 24h "HH:MM" for notifications
+  startTime: string;
   room: string;
   icon: string;
   iconBg: string;
@@ -18,44 +18,30 @@ interface ClassSlot {
 
 const timetableData: Record<Day, ClassSlot[]> = {
   Mon: [
-    { subject: 'Computer Org & Arch', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 352', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-    { subject: 'VLSI Design Lab (G3)', time: '10:40 – 12:20', startTime: '10:40', room: 'ECL 356', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab' },
-    { subject: 'DSP Lab-I (G3)', time: '02:00 – 03:40', startTime: '14:00', room: 'ECL 357', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', type: 'Lab' },
-    { subject: 'Microprocessors', time: '03:40 – 04:30', startTime: '15:40', room: 'ECT 301', icon: 'developer_board', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500' },
-    { subject: 'Signals & Systems', time: '04:30 – 05:20', startTime: '16:30', room: 'ECT 303', icon: 'show_chart', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
+    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
+    { subject: 'VLSI Design Lab (G3)', time: '09:50 – 11:30', startTime: '09:50', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab' },
+    { subject: 'DSP Lab-I (G3)', time: '11:30 – 12:20', startTime: '11:30', room: 'Lab', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', type: 'Lab' },
+    { subject: 'Elective-II', time: '12:20 – 01:10', startTime: '12:20', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
+    { subject: 'IE-2', time: '01:10 – 02:00', startTime: '13:10', room: 'L-15', icon: 'school', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
   ],
   Tue: [
-    { subject: 'Signals & Systems', time: '09:00 – 09:50', startTime: '09:00', room: 'ECT 303', icon: 'show_chart', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
-    { subject: 'Microprocessors', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 301', icon: 'developer_board', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500' },
-    { subject: 'Computer Org & Arch', time: '10:40 – 11:30', startTime: '10:40', room: 'ECT 352', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-    { subject: 'Engineering Maths', time: '02:00 – 02:50', startTime: '14:00', room: 'ECT 201', icon: 'calculate', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
+    { subject: 'Data Comm. & Networking', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500' },
+    { subject: 'VLSI Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
   ],
   Wed: [
-    { subject: 'VLSI Design', time: '09:00 – 09:50', startTime: '09:00', room: 'ECT 355', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
-    { subject: 'Engineering Maths', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 201', icon: 'calculate', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
-    { subject: 'Comm. Systems Lab', time: '10:40 – 12:20', startTime: '10:40', room: 'ECL 360', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500', type: 'Lab' },
-    { subject: 'Signals & Systems', time: '02:00 – 02:50', startTime: '14:00', room: 'ECT 303', icon: 'show_chart', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
+    { subject: 'Digital Signal Processing', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500' },
   ],
   Thu: [
-    { subject: 'Engineering Maths', time: '09:00 – 09:50', startTime: '09:00', room: 'ECT 201', icon: 'calculate', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
-    { subject: 'Computer Org & Arch', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 352', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-    { subject: 'Microprocessors Lab', time: '10:40 – 12:20', startTime: '10:40', room: 'ECL 358', icon: 'developer_board', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500', type: 'Lab' },
-    { subject: 'VLSI Design', time: '02:00 – 02:50', startTime: '14:00', room: 'ECT 355', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
+    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
+    { subject: 'Data Comm. & Networking', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500' },
   ],
   Fri: [
-    { subject: 'Signals & Systems', time: '09:00 – 09:50', startTime: '09:00', room: 'ECT 303', icon: 'show_chart', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
-    { subject: 'Microprocessors', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 301', icon: 'developer_board', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500' },
-    { subject: 'Engineering Maths', time: '10:40 – 11:30', startTime: '10:40', room: 'ECT 201', icon: 'calculate', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
-    { subject: 'Computer Org & Arch', time: '02:00 – 02:50', startTime: '14:00', room: 'ECT 352', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-  ],
-  Sat: [
-    { subject: 'VLSI Design', time: '09:00 – 09:50', startTime: '09:00', room: 'ECT 355', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
-    { subject: 'Comm. Systems', time: '09:50 – 10:40', startTime: '09:50', room: 'ECT 360', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500' },
+    { subject: 'RF Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'settings_input_antenna', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500' },
   ],
 };
 
 const dayNames: Record<Day, string> = {
-  Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday',
+  Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday',
 };
 
 const todayStr = new Date().toISOString().split('T')[0];
@@ -78,7 +64,7 @@ const cardVariants = {
 const Schedule: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<Day>(() => {
     const d = new Date().getDay();
-    const map: Day[] = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; // Sun defaults to Mon
+    const map: Day[] = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']; // Sun defaults to Mon
     return map[d] || 'Mon';
   });
   const [, forceUpdate] = useState(0);
