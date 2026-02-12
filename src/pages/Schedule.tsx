@@ -99,6 +99,11 @@ const Schedule: React.FC = () => {
                                   <p className="text-[11px] md:text-[12px] text-muted-foreground flex items-center gap-1">
                                     <span className="material-symbols-outlined text-[13px]">location_on</span> {cls.room}
                                   </p>
+                                  {cls.faculty && (
+                                    <p className="text-[11px] md:text-[12px] text-muted-foreground flex items-center gap-1">
+                                      <span className="material-symbols-outlined text-[13px]">person</span> {cls.faculty}
+                                    </p>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex flex-col items-end gap-1">
