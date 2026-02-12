@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { requestNotificationPermission } from '@/lib/notifications';
+import { getTodayClasses, getClassStatus, dayNames, getTodayDay } from '@/lib/timetable';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -76,55 +77,60 @@ const Dashboard: React.FC = () => {
               <button onClick={() => navigate('/schedule')} className="text-primary text-[11px] md:text-[12px] font-bold active:opacity-70">View Full Week →</button>
             </div>
 
-            {/* Current Class */}
-            <div className="bg-card rounded-2xl p-4 border border-orange-200/60 dark:border-border shadow-sm relative overflow-hidden">
-              <div className="absolute top-2 right-2 opacity-[0.04]">
-                <span className="material-symbols-outlined text-[80px]">memory</span>
-              </div>
-              <div className="flex items-start justify-between relative z-10">
-                <div className="flex gap-3">
-                  <div className="size-10 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-[20px]">memory</span>
+            {(() => {
+              const todayClasses = getTodayClasses();
+              if (todayClasses.length === 0) {
+                return (
+                  <div className="bg-card rounded-2xl p-6 border border-border text-center">
+                    <span className="material-symbols-outlined text-[40px] text-muted-foreground/30 mb-2">event_available</span>
+                    <p className="text-muted-foreground font-medium text-[14px]">No classes today!</p>
+                    <p className="text-muted-foreground/60 text-[12px] mt-1">Enjoy your {dayNames[getTodayDay()]} 🎉</p>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-foreground text-[14px] leading-tight">Computer Org & Arch</h3>
-                    <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[13px]">schedule</span> 09:00 – 09:50 AM
-                    </p>
-                    <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[13px]">location_on</span> L-15
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-green-500/10 text-green-600 uppercase border border-green-500/20 animate-pulse">Current</span>
-              </div>
-            </div>
-
-            {/* Upcoming */}
-            {[
-              { name: 'VLSI Design Lab (G3)', time: '09:50 – 11:30', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
-              { name: 'DSP Lab-I (G3)', time: '11:30 – 12:20', room: 'Lab', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500' },
-            ].map((cls, idx) => (
-              <div key={idx} className="bg-card rounded-2xl p-4 border border-border opacity-70">
-                <div className="flex items-start justify-between">
-                  <div className="flex gap-3">
-                    <div className={`size-10 rounded-xl ${cls.iconBg} ${cls.iconColor} flex items-center justify-center shrink-0`}>
-                      <span className="material-symbols-outlined text-[20px]">{cls.icon}</span>
+                );
+              }
+              return todayClasses.map((cls, idx) => {
+                const status = getClassStatus(cls.startTime);
+                return (
+                  <div key={idx} className={`bg-card rounded-2xl p-4 border relative overflow-hidden ${
+                    status === 'current' ? 'border-primary/30 shadow-sm' : status === 'done' ? 'border-border opacity-50' : 'border-border opacity-70'
+                  }`}>
+                    {status === 'current' && (
+                      <div className="absolute top-2 right-2 opacity-[0.04]">
+                        <span className="material-symbols-outlined text-[80px]">{cls.icon}</span>
+                      </div>
+                    )}
+                    <div className="flex items-start justify-between relative z-10">
+                      <div className="flex gap-3">
+                        <div className={`size-10 rounded-xl ${cls.iconBg} ${cls.iconColor} flex items-center justify-center shrink-0`}>
+                          <span className="material-symbols-outlined text-[20px]">{cls.icon}</span>
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-foreground text-[14px] leading-tight">{cls.subject}</h3>
+                          <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[13px]">schedule</span> {cls.time}
+                          </p>
+                          <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[13px]">location_on</span> {cls.room}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        {cls.type && (
+                          <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 uppercase">{cls.type}</span>
+                        )}
+                        <span className={`text-[9px] font-bold py-0.5 px-2 rounded-full uppercase ${
+                          status === 'current' ? 'bg-green-500/10 text-green-600 border border-green-500/20 animate-pulse'
+                          : status === 'done' ? 'bg-secondary text-muted-foreground'
+                          : 'bg-secondary text-muted-foreground'
+                        }`}>
+                          {status === 'current' ? 'Current' : status === 'done' ? 'Done' : 'Upcoming'}
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-foreground text-[14px] leading-tight">{cls.name}</h3>
-                      <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[13px]">schedule</span> {cls.time}
-                      </p>
-                      <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[13px]">location_on</span> {cls.room}
-                      </p>
-                    </div>
                   </div>
-                  <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-secondary text-muted-foreground uppercase">Upcoming</span>
-                </div>
-              </div>
-            ))}
+                );
+              });
+            })()}
           </div>
 
           {/* Resources + Quick Access column */}
