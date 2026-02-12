@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { requestNotificationPermission } from '@/lib/notifications';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 relative overflow-x-hidden">
@@ -15,23 +20,26 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="sticky top-0 z-50 glass-morphism px-4 py-3 flex items-center justify-between border-b border-border">
         <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-full bg-cover bg-center border-2 border-primary/20 cursor-pointer shadow-md active:scale-95 transition-transform"
-            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80")' }}
-            onClick={() => navigate('/profile')}
-          />
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-md">
+            <span className="material-symbols-outlined text-white text-[20px]">school</span>
+          </div>
           <div>
-            <h2 className="text-foreground text-[15px] font-bold leading-tight">Welcome, Student</h2>
+            <h2 className="text-foreground text-[15px] font-bold leading-tight">Campus Companion</h2>
             <p className="text-primary text-[11px] font-bold tracking-wide">ECE • 6th Sem - Sec B</p>
           </div>
         </div>
-        <button className="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 text-primary border border-primary/10 active:scale-95 transition-transform">
-          <span className="material-symbols-outlined text-[22px]">notifications</span>
+        <button
+          onClick={() => navigate('/profile')}
+          className="flex items-center justify-center rounded-xl h-10 w-10 bg-primary/5 text-primary border border-primary/10 active:scale-95 transition-transform"
+        >
+          <span className="material-symbols-outlined text-[22px]">settings</span>
         </button>
       </div>
 
       <div className="px-4 pt-4 pb-1 relative z-10">
-        <p className="text-muted-foreground text-[11px] font-bold uppercase tracking-widest">Monday, Oct 23</p>
+        <p className="text-muted-foreground text-[11px] font-bold uppercase tracking-widest">
+          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+        </p>
         <h1 className="text-2xl font-black text-foreground tracking-tight mt-0.5">Daily Schedule</h1>
       </div>
 
@@ -58,11 +66,11 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Timetable */}
+      {/* Today's Timetable Preview */}
       <div className="flex-1 px-4 space-y-3">
         <div className="flex items-center justify-between mb-1">
           <h2 className="text-base font-bold text-foreground">Today's Timetable</h2>
-          <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full uppercase tracking-tight">Mon • 5 Classes</span>
+          <button onClick={() => navigate('/schedule')} className="text-primary text-[11px] font-bold active:opacity-70">View Full Week →</button>
         </div>
 
         {/* Current Class */}
@@ -87,14 +95,6 @@ const Dashboard: React.FC = () => {
             </div>
             <span className="text-[9px] font-bold py-0.5 px-2 rounded-full bg-green-500/10 text-green-600 uppercase border border-green-500/20 animate-pulse">Current</span>
           </div>
-          <div className="grid grid-cols-2 gap-2.5 mt-3.5 relative z-10">
-            <button className="flex items-center justify-center gap-1.5 bg-primary text-primary-foreground text-[13px] font-semibold py-2.5 rounded-xl active:scale-[0.97] transition-transform shadow-md shadow-primary/20">
-              <span className="material-symbols-outlined text-[16px]">check_circle</span> Present
-            </button>
-            <button className="flex items-center justify-center gap-1.5 bg-card border border-border text-muted-foreground text-[13px] font-semibold py-2.5 rounded-xl active:scale-[0.97] transition-transform">
-              <span className="material-symbols-outlined text-[16px]">cancel</span> Absent
-            </button>
-          </div>
         </div>
 
         {/* Upcoming */}
@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
           { name: 'VLSI Design Lab (G3)', time: '10:40 – 12:20 PM', room: 'ECL 356', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
           { name: 'DSP Lab-I (G3)', time: '02:00 – 03:40 PM', room: 'ECL 357', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500' },
         ].map((cls, idx) => (
-          <div key={idx} className="bg-card rounded-2xl p-4 border border-border opacity-70 active:opacity-100 transition-opacity">
+          <div key={idx} className="bg-card rounded-2xl p-4 border border-border opacity-70">
             <div className="flex items-start justify-between">
               <div className="flex gap-3">
                 <div className={`size-10 rounded-xl ${cls.iconBg} ${cls.iconColor} flex items-center justify-center shrink-0`}>
@@ -149,39 +149,27 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Quick Access */}
+      {/* Quick Access — just schedule & GPA */}
       <div className="px-4 pb-6 grid grid-cols-2 gap-3">
-        {[
-          { path: '/schedule', icon: 'calendar_today', label: 'Weekly Schedule', sub: 'View Timetable', dark: true },
-          { path: '/placements', icon: 'business_center', label: 'Placement Cell', sub: 'Drives & Prep', bg: 'bg-blue-50 dark:bg-blue-900/10', border: 'border-blue-100 dark:border-blue-800', iconBg: 'bg-blue-500', textColor: 'text-blue-900 dark:text-blue-100', subColor: 'text-blue-600 dark:text-blue-300' },
-          { path: '/faculty', icon: 'school', label: 'Faculty', sub: 'Contact Professors', bg: 'bg-amber-50 dark:bg-amber-900/10', border: 'border-amber-100 dark:border-amber-800', iconBg: 'bg-amber-500', textColor: 'text-amber-900 dark:text-amber-100', subColor: 'text-amber-600 dark:text-amber-300' },
-          { icon: 'calculate', label: 'GPA Estimator', sub: 'Calculate SGPA', bg: 'bg-teal-50 dark:bg-teal-900/10', border: 'border-teal-100 dark:border-teal-800', iconBg: 'bg-teal-500', textColor: 'text-teal-900 dark:text-teal-100', subColor: 'text-teal-600 dark:text-teal-300' },
-          { icon: 'group', label: 'Study Groups', sub: 'Find Buddies', bg: 'bg-indigo-50 dark:bg-indigo-900/10', border: 'border-indigo-100 dark:border-indigo-800', iconBg: 'bg-indigo-500', textColor: 'text-indigo-900 dark:text-indigo-100', subColor: 'text-indigo-600 dark:text-indigo-300' },
-          { icon: 'checklist_rtl', label: 'Syllabus Tracker', sub: 'Track Progress', bg: 'bg-rose-50 dark:bg-rose-900/10', border: 'border-rose-100 dark:border-rose-800', iconBg: 'bg-rose-500', textColor: 'text-rose-900 dark:text-rose-100', subColor: 'text-rose-600 dark:text-rose-300' },
-        ].map((tile, idx) => (
-          tile.dark ? (
-            <div key={idx} onClick={() => tile.path && navigate(tile.path)} className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-slate-700 h-[120px] relative overflow-hidden group active:scale-95 transition-transform">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-active:opacity-100 transition-opacity" />
-              <div className="size-9 rounded-xl bg-white/10 flex items-center justify-center relative z-10">
-                <span className="material-symbols-outlined text-[20px]">{tile.icon}</span>
-              </div>
-              <div className="relative z-10">
-                <h3 className="font-bold text-white text-[13px] leading-tight">{tile.label}</h3>
-                <p className="text-[10px] text-slate-300 mt-0.5 font-medium">{tile.sub}</p>
-              </div>
-            </div>
-          ) : (
-            <div key={idx} onClick={() => tile.path && navigate(tile.path)} className={`${tile.bg} p-4 rounded-2xl flex flex-col justify-between cursor-pointer border ${tile.border} h-[120px] active:scale-95 transition-transform`}>
-              <div className={`size-9 rounded-xl ${tile.iconBg} text-white flex items-center justify-center shadow-sm`}>
-                <span className="material-symbols-outlined text-[20px]">{tile.icon}</span>
-              </div>
-              <div>
-                <h3 className={`font-bold ${tile.textColor} text-[13px] leading-tight`}>{tile.label}</h3>
-                <p className={`text-[10px] ${tile.subColor} mt-0.5 font-medium`}>{tile.sub}</p>
-              </div>
-            </div>
-          )
-        ))}
+        <div onClick={() => navigate('/schedule')} className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-slate-700 h-[120px] relative overflow-hidden group active:scale-95 transition-transform">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-active:opacity-100 transition-opacity" />
+          <div className="size-9 rounded-xl bg-white/10 flex items-center justify-center relative z-10">
+            <span className="material-symbols-outlined text-[20px]">calendar_today</span>
+          </div>
+          <div className="relative z-10">
+            <h3 className="font-bold text-white text-[13px] leading-tight">Weekly Schedule</h3>
+            <p className="text-[10px] text-slate-300 mt-0.5 font-medium">View Timetable</p>
+          </div>
+        </div>
+        <div className="bg-teal-50 dark:bg-teal-900/10 p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-teal-100 dark:border-teal-800 h-[120px] active:scale-95 transition-transform">
+          <div className="size-9 rounded-xl bg-teal-500 text-white flex items-center justify-center shadow-sm">
+            <span className="material-symbols-outlined text-[20px]">calculate</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-teal-900 dark:text-teal-100 text-[13px] leading-tight">GPA Estimator</h3>
+            <p className="text-[10px] text-teal-600 dark:text-teal-300 mt-0.5 font-medium">Calculate SGPA</p>
+          </div>
+        </div>
       </div>
     </div>
   );

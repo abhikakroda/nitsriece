@@ -6,8 +6,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Dashboard from "./pages/Dashboard";
 import Schedule from "./pages/Schedule";
-import Faculty from "./pages/Faculty";
-import Placements from "./pages/Placements";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
@@ -23,8 +21,6 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
         <Route path="/schedule" element={<PageTransition><Schedule /></PageTransition>} />
-        <Route path="/faculty" element={<PageTransition><Faculty /></PageTransition>} />
-        <Route path="/placements" element={<PageTransition><Placements /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>

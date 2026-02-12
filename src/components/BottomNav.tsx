@@ -4,8 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const tabs = [
   { path: '/', icon: 'home', label: 'Home' },
   { path: '/schedule', icon: 'calendar_today', label: 'Schedule' },
-  { path: '/placements', icon: 'trending_up', label: 'Stats' },
-  { path: '/profile', icon: 'person', label: 'Profile' },
+  { path: '/profile', icon: 'settings', label: 'Settings' },
 ];
 
 const BottomNav: React.FC = () => {
