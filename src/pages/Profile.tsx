@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/hooks/use-theme';
 import { requestNotificationPermission, isNotificationEnabled } from '@/lib/notifications';
-import { getAllSubjectStats } from '@/lib/attendance';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -30,11 +29,9 @@ const Profile: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [hideExamCountdown, setHideExamCountdown] = useState(() => localStorage.getItem('hideExamCountdown') === 'true');
-  const [attendanceStats, setAttendanceStats] = useState<Record<string, { present: number; absent: number; total: number; percentage: number }>>({});
 
   useEffect(() => {
     setNotificationsEnabled(isNotificationEnabled());
-    setAttendanceStats(getAllSubjectStats());
   }, []);
 
   const handleEnableNotifications = async () => {
@@ -48,7 +45,7 @@ const Profile: React.FC = () => {
     setHideExamCountdown(!current);
   };
 
-  const statEntries = Object.entries(attendanceStats);
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6">
@@ -63,33 +60,6 @@ const Profile: React.FC = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Attendance Overview */}
-        {statEntries.length > 0 && (
-          <motion.section variants={fadeUp}>
-            <h3 className="text-muted-foreground text-[10px] font-bold uppercase tracking-[0.18em] px-1 mb-2">Attendance Overview</h3>
-            <div className="bg-card card-elevated rounded-[16px] overflow-hidden divide-y divide-border/40 border border-border/50">
-              {statEntries.map(([subject, stats]) => (
-                <div key={subject} className="flex items-center gap-3 px-4 py-3">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-foreground text-[13px] font-semibold truncate">{subject}</p>
-                    <p className="text-muted-foreground text-[10px]">{stats.present}P / {stats.absent}A — {stats.total} classes</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 md:w-20 h-1.5 bg-secondary rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${stats.percentage >= 75 ? 'bg-gradient-to-r from-green-400 to-green-500' : 'bg-gradient-to-r from-red-400 to-red-500'}`}
-                        style={{ width: `${stats.percentage}%` }}
-                      />
-                    </div>
-                    <span className={`text-[11px] font-bold min-w-[28px] text-right ${stats.percentage >= 75 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-                      {stats.percentage}%
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.section>
-        )}
 
         {/* Preferences */}
         <motion.section variants={fadeUp}>
