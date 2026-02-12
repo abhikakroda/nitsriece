@@ -111,42 +111,6 @@ const Profile: React.FC = () => {
           </section>
         </div>
 
-        <div className="md:grid md:grid-cols-2 md:gap-5 space-y-5 md:space-y-0">
-          {/* Preferences */}
-          <section>
-            <h3 className="text-muted-foreground text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-1 mb-2">Preferences</h3>
-            <div className="bg-card rounded-2xl overflow-hidden divide-y divide-border border border-border">
-              <div className="flex items-center gap-3 px-4 py-3.5 justify-between cursor-pointer active:bg-accent transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="text-muted-foreground flex items-center justify-center rounded-xl bg-secondary shrink-0 size-9">
-                    <span className="material-symbols-outlined text-[20px]">language</span>
-                  </div>
-                  <div>
-                    <p className="text-foreground text-[14px] font-medium">Language</p>
-                    <p className="text-muted-foreground text-[11px]">English (US)</p>
-                  </div>
-                </div>
-                <span className="material-symbols-outlined text-muted-foreground text-[20px]">chevron_right</span>
-              </div>
-            </div>
-          </section>
-
-          {/* About */}
-          <section>
-            <h3 className="text-muted-foreground text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-1 mb-2">About</h3>
-            <div className="bg-card rounded-2xl overflow-hidden border border-border px-4 py-3.5">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center shadow-sm">
-                  <span className="material-symbols-outlined text-white text-[20px]">school</span>
-                </div>
-                <div>
-                  <p className="text-foreground text-[14px] font-bold">Campus Companion</p>
-                  <p className="text-muted-foreground text-[11px]">Version 1.0 • ECE Sec B</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
       </div>
     </div>
   );
