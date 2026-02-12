@@ -18,20 +18,20 @@ const Faculty: React.FC = () => {
   );
 
   return (
-    <div className="bg-background min-h-screen flex flex-col pb-safe">
-      <header className="sticky top-0 z-50 glass-morphism px-4 py-4 border-b border-border">
-        <div className="flex items-center gap-3 mb-4">
-          <button onClick={() => navigate(-1)} className="p-2 hover:bg-accent rounded-full transition-colors">
-            <span className="material-symbols-outlined text-primary">arrow_back</span>
+    <div className="bg-background min-h-screen flex flex-col pb-20">
+      <header className="sticky top-0 z-50 glass-morphism px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-3 mb-3">
+          <button onClick={() => navigate(-1)} className="p-2 active:bg-accent rounded-full transition-colors">
+            <span className="material-symbols-outlined text-primary text-[22px]">arrow_back</span>
           </button>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">Faculty Directory</h1>
+          <h1 className="text-[17px] font-bold tracking-tight text-foreground">Faculty Directory</h1>
         </div>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <span className="material-symbols-outlined text-muted-foreground text-xl">search</span>
+            <span className="material-symbols-outlined text-muted-foreground text-[20px]">search</span>
           </div>
           <input
-            className="block w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl text-sm placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 shadow-sm outline-none transition-all"
+            className="block w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-xl text-[14px] placeholder-muted-foreground focus:ring-2 focus:ring-primary/50 shadow-sm outline-none transition-all"
             placeholder="Search by name or domain..."
             type="text"
             value={searchTerm}
@@ -40,20 +40,20 @@ const Faculty: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 px-4 py-6 space-y-4">
+      <main className="flex-1 px-4 py-4 space-y-3">
         {filtered.map((fac, idx) => (
-          <div key={idx} className="bg-card p-4 rounded-xl border border-border shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow">
-            <img src={fac.img} alt={fac.name} className="size-16 rounded-full object-cover border-2 border-border" />
+          <div key={idx} className="bg-card p-3.5 rounded-2xl border border-border shadow-sm flex items-center gap-3 active:shadow-md transition-shadow">
+            <img src={fac.img} alt={fac.name} className="size-14 rounded-full object-cover border-2 border-border" />
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-foreground text-base">{fac.name}</h3>
-              <p className="text-xs font-bold text-primary uppercase tracking-wide mb-1">{fac.position}</p>
-              <p className="text-xs text-muted-foreground truncate">{fac.domain}</p>
-              <div className="flex items-center gap-4 mt-3">
-                <a href={`mailto:${fac.email}`} className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 text-xs font-medium">
-                  <span className="material-symbols-outlined text-sm">mail</span> Email
+              <h3 className="font-bold text-foreground text-[14px]">{fac.name}</h3>
+              <p className="text-[10px] font-bold text-primary uppercase tracking-wide mb-0.5">{fac.position}</p>
+              <p className="text-[11px] text-muted-foreground truncate">{fac.domain}</p>
+              <div className="flex items-center gap-3 mt-2">
+                <a href={`mailto:${fac.email}`} className="text-muted-foreground active:text-primary transition-colors flex items-center gap-1 text-[11px] font-medium">
+                  <span className="material-symbols-outlined text-[14px]">mail</span> Email
                 </a>
-                <span className="text-muted-foreground flex items-center gap-1 text-xs font-medium">
-                  <span className="material-symbols-outlined text-sm">location_on</span> {fac.cabin}
+                <span className="text-muted-foreground flex items-center gap-1 text-[11px] font-medium">
+                  <span className="material-symbols-outlined text-[14px]">location_on</span> {fac.cabin}
                 </span>
               </div>
             </div>
