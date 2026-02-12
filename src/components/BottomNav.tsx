@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -9,12 +9,12 @@ const tabs = [
   { path: '/profile', icon: 'settings', label: 'Settings' },
 ];
 
-const BottomNav = forwardRef<HTMLDivElement>((_, ref) => {
+const BottomNav: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
-    <div ref={ref}>
+    <>
       {/* Mobile bottom nav */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 glass-morphism border-t border-border/50 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <div className="flex items-center justify-around h-[56px] max-w-lg mx-auto">
@@ -83,10 +83,8 @@ const BottomNav = forwardRef<HTMLDivElement>((_, ref) => {
           <p className="text-muted-foreground/30 text-[9px] mt-0.5">NIT Srinagar • ECE Dept</p>
         </div>
       </nav>
-    </div>
+    </>
   );
-});
-
-BottomNav.displayName = 'BottomNav';
+};
 
 export default BottomNav;
