@@ -7,11 +7,10 @@ import { AnimatePresence } from "framer-motion";
 import Dashboard from "./pages/Dashboard";
 import Schedule from "./pages/Schedule";
 import Profile from "./pages/Profile";
+import GpaCalculator from "./pages/GpaCalculator";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 import PageTransition from "./components/PageTransition";
-
-const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -21,12 +20,15 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Dashboard /></PageTransition>} />
         <Route path="/schedule" element={<PageTransition><Schedule /></PageTransition>} />
+        <Route path="/gpa" element={<PageTransition><GpaCalculator /></PageTransition>} />
         <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
 };
+
+const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

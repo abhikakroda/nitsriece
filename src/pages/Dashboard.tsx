@@ -218,6 +218,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
               <div
+                onClick={() => navigate('/gpa')}
                 className="bg-gradient-to-br from-primary/8 to-violet-500/8 dark:from-primary/12 dark:to-violet-500/12 p-4 rounded-2xl flex flex-col justify-between cursor-pointer border border-primary/10 h-[130px] active:scale-[0.96] transition-all duration-200"
               >
                 <div className="size-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-md shadow-primary/20">
