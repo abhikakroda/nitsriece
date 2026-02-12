@@ -82,7 +82,7 @@ const Dashboard: React.FC = () => {
               { label: 'Weekly', value: String(weeklyTotal), sub: 'Total' },
               { label: 'Attendance', value: totalClasses > 0 ? `${overallPercent}%` : 'N/A', sub: totalClasses > 0 ? 'Overall' : 'No data' },
             ].map((stat, i) => (
-              <div key={i} className="rounded-[14px] border border-border/50 bg-card/60 dark:bg-card/40 p-3.5 md:p-4">
+              <div key={i} className="rounded-[14px] liquid-glass-card p-3.5 md:p-4">
                 <p className="text-[10px] md:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{stat.label}</p>
                 <p className="font-display text-[24px] md:text-[28px] font-bold text-foreground leading-none mt-1">{stat.value}</p>
                 <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">{stat.sub}</p>

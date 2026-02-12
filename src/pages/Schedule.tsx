@@ -60,7 +60,7 @@ const Schedule: React.FC = () => {
   return (
     <div className="bg-background min-h-screen flex flex-col pb-20 lg:pb-6">
       {/* Header */}
-      <div className="sticky top-0 z-50 glass-morphism px-5 md:px-6 pt-5 pb-4 border-b border-border/30">
+      <div className="sticky top-0 z-50 liquid-glass-nav px-5 md:px-6 pt-5 pb-4 border-b border-border/20">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
