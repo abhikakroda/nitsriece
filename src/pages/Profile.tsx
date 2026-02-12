@@ -14,6 +14,18 @@ const stagger = {
   visible: { opacity: 1, transition: { staggerChildren: 0.07 } },
 };
 
+const ToggleSwitch = ({ active }: { active: boolean }) => (
+  <div
+    className={`relative w-[44px] h-[26px] rounded-full p-0.5 transition-colors duration-300 ${active ? 'bg-primary' : 'bg-border'}`}
+  >
+    <motion.div
+      className="h-[22px] w-[22px] rounded-full bg-white shadow-sm"
+      animate={{ x: active ? 18 : 0 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+    />
+  </div>
+);
+
 const Profile: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -30,20 +42,13 @@ const Profile: React.FC = () => {
     setNotificationsEnabled(isNotificationEnabled());
   };
 
-  const statEntries = Object.entries(attendanceStats);
+  const handleToggleExamCountdown = () => {
+    const current = localStorage.getItem('hideExamCountdown') === 'true';
+    localStorage.setItem('hideExamCountdown', String(!current));
+    setHideExamCountdown(!current);
+  };
 
-  const ToggleSwitch = ({ active, onClick }: { active: boolean; onClick: (e: React.MouseEvent) => void }) => (
-    <div
-      onClick={onClick}
-      className={`relative w-[44px] h-[26px] rounded-full p-0.5 cursor-pointer transition-colors duration-300 ${active ? 'bg-primary' : 'bg-border'}`}
-    >
-      <motion.div
-        className="h-[22px] w-[22px] rounded-full bg-white shadow-sm"
-        animate={{ x: active ? 18 : 0 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-      />
-    </div>
-  );
+  const statEntries = Object.entries(attendanceStats);
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6">
@@ -101,15 +106,11 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">{theme === 'dark' ? 'Currently dark' : 'Currently light'}</p>
                 </div>
               </div>
-              <ToggleSwitch active={theme === 'dark'} onClick={(e) => e.stopPropagation()} />
+              <ToggleSwitch active={theme === 'dark'} />
             </div>
 
             {/* Exam Countdown */}
-            <div className="flex items-center gap-3 px-4 py-3.5 justify-between cursor-pointer active:bg-accent/30 transition-colors" onClick={() => {
-              const current = localStorage.getItem('hideExamCountdown') === 'true';
-              localStorage.setItem('hideExamCountdown', String(!current));
-              setHideExamCountdown(!current);
-            }}>
+            <div className="flex items-center gap-3 px-4 py-3.5 justify-between cursor-pointer active:bg-accent/30 transition-colors" onClick={handleToggleExamCountdown}>
               <div className="flex items-center gap-3">
                 <div className="text-muted-foreground flex items-center justify-center rounded-[12px] bg-secondary/60 shrink-0 size-10">
                   <span className="material-symbols-outlined text-[20px]">timer</span>
@@ -119,7 +120,7 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">Show on dashboard</p>
                 </div>
               </div>
-              <ToggleSwitch active={!hideExamCountdown} onClick={(e) => e.stopPropagation()} />
+              <ToggleSwitch active={!hideExamCountdown} />
             </div>
 
             {/* Notifications */}
@@ -136,7 +137,7 @@ const Profile: React.FC = () => {
               {notificationsEnabled ? (
                 <div className="flex items-center gap-1 bg-green-500/6 px-2.5 py-1 rounded-full border border-green-500/10">
                   <span className="material-symbols-outlined text-green-500 text-[13px]">check_circle</span>
-                  <span className="text-green-600 text-[10px] font-bold">Active</span>
+                  <span className="text-green-600 dark:text-green-400 text-[10px] font-bold">Active</span>
                 </div>
               ) : (
                 <button
