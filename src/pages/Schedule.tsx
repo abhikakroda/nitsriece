@@ -1,48 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { markAttendance, getAttendance, getSubjectStats } from '@/lib/attendance';
-
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const;
-type Day = typeof days[number];
-
-interface ClassSlot {
-  subject: string;
-  time: string;
-  startTime: string;
-  room: string;
-  icon: string;
-  iconBg: string;
-  iconColor: string;
-  type?: string;
-}
-
-const timetableData: Record<Day, ClassSlot[]> = {
-  Mon: [
-    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-    { subject: 'VLSI Design Lab (G3)', time: '09:50 – 10:40', startTime: '09:50', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab' },
-    { subject: 'DSP Lab-I (G3)', time: '11:30 – 12:20', startTime: '11:30', room: 'Lab', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500', type: 'Lab' },
-    { subject: 'Elective-II', time: '12:20 – 01:10', startTime: '12:20', room: 'L-15', icon: 'auto_stories', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
-    { subject: 'IE-2', time: '01:10 – 02:00', startTime: '13:10', room: 'L-15', icon: 'school', iconBg: 'bg-teal-500/10', iconColor: 'text-teal-500' },
-  ],
-  Tue: [
-    { subject: 'Data Comm. & Networking', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500' },
-    { subject: 'VLSI Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500' },
-  ],
-  Wed: [
-    { subject: 'Digital Signal Processing', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'graphic_eq', iconBg: 'bg-green-500/10', iconColor: 'text-green-500' },
-  ],
-  Thu: [
-    { subject: 'Computer Org & Arch', time: '09:00 – 09:50', startTime: '09:00', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-    { subject: 'Data Comm. & Networking', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'cell_tower', iconBg: 'bg-pink-500/10', iconColor: 'text-pink-500' },
-  ],
-  Fri: [
-    { subject: 'RF Design', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'settings_input_antenna', iconBg: 'bg-blue-500/10', iconColor: 'text-blue-500' },
-  ],
-};
-
-const dayNames: Record<Day, string> = {
-  Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday',
-};
+import { days, timetableData, dayNames, getTodayDay, type Day } from '@/lib/timetable';
 
 const todayStr = new Date().toISOString().split('T')[0];
 
@@ -62,11 +21,7 @@ const cardVariants = {
 };
 
 const Schedule: React.FC = () => {
-  const [selectedDay, setSelectedDay] = useState<Day>(() => {
-    const d = new Date().getDay();
-    const map: Day[] = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-    return map[d] || 'Mon';
-  });
+  const [selectedDay, setSelectedDay] = useState<Day>(getTodayDay);
   const [, forceUpdate] = useState(0);
   const classes = timetableData[selectedDay];
 
@@ -127,12 +82,9 @@ const Schedule: React.FC = () => {
 
                       return (
                         <motion.div key={`${selectedDay}-${idx}`} variants={cardVariants} custom={idx} className="flex gap-3 relative">
-                          {/* Timeline dot */}
                           <div className="relative z-10 mt-4 shrink-0">
                             <div className={`size-[10px] rounded-full border-2 ${idx === 0 ? 'border-primary bg-primary' : 'border-border bg-card'}`} style={{ marginLeft: '10px' }} />
                           </div>
-
-                          {/* Card */}
                           <div className={`flex-1 bg-card rounded-2xl p-3.5 md:p-4 border ${idx === 0 ? 'border-primary/20 shadow-sm' : 'border-border'}`}>
                             <div className="flex items-start justify-between">
                               <div className="flex gap-3">
@@ -160,8 +112,6 @@ const Schedule: React.FC = () => {
                                 )}
                               </div>
                             </div>
-
-                            {/* Attendance buttons */}
                             <div className="grid grid-cols-2 gap-2 mt-3">
                               <button
                                 onClick={() => handleAttendance(cls.subject, 'present')}
