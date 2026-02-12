@@ -1,9 +1,11 @@
 // Class notification system using browser Notification API
 
-export function requestNotificationPermission() {
-  if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
+export async function requestNotificationPermission(): Promise<NotificationPermission | null> {
+  if ('Notification' in window) {
+    const result = await Notification.requestPermission();
+    return result;
   }
+  return null;
 }
 
 export function isNotificationEnabled(): boolean {
