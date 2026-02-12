@@ -32,7 +32,7 @@ const Profile: React.FC = () => {
 
   const statEntries = Object.entries(attendanceStats);
 
-  const ToggleSwitch = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
+  const ToggleSwitch = ({ active, onClick }: { active: boolean; onClick: (e: React.MouseEvent) => void }) => (
     <div
       onClick={onClick}
       className={`relative w-[44px] h-[26px] rounded-full p-0.5 cursor-pointer transition-colors duration-300 ${active ? 'bg-primary' : 'bg-border'}`}
@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">{theme === 'dark' ? 'Currently dark' : 'Currently light'}</p>
                 </div>
               </div>
-              <ToggleSwitch active={theme === 'dark'} onClick={toggleTheme} />
+              <ToggleSwitch active={theme === 'dark'} onClick={(e) => e.stopPropagation()} />
             </div>
 
             {/* Exam Countdown */}
@@ -119,7 +119,7 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">Show on dashboard</p>
                 </div>
               </div>
-              <ToggleSwitch active={!hideExamCountdown} onClick={() => {}} />
+              <ToggleSwitch active={!hideExamCountdown} onClick={(e) => e.stopPropagation()} />
             </div>
 
             {/* Notifications */}
