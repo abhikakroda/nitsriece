@@ -124,10 +124,13 @@ const Profile: React.FC = () => {
         {/* About */}
         <motion.section variants={fadeUp}>
           <h3 className="text-muted-foreground text-[10px] font-bold uppercase tracking-[0.18em] px-1 mb-2">About</h3>
-          <div className="bg-card card-elevated rounded-[16px] overflow-hidden border border-border/50 px-4 py-4">
-            <p className="text-foreground text-[13px] font-semibold">Campus Companion</p>
-            <p className="text-muted-foreground text-[11px] mt-0.5">ECE Section B • 6th Semester</p>
-            <p className="text-muted-foreground/50 text-[10px] mt-2">NIT Srinagar • v1.0</p>
+          <div className="bg-card card-elevated rounded-[16px] overflow-hidden border border-border/50 px-4 py-4 flex items-center gap-3.5">
+            <img src="/pwa-192x192.png" alt="Time Table" className="size-12 rounded-[12px] shadow-sm" />
+            <div>
+              <p className="text-foreground text-[13px] font-semibold">Time Table</p>
+              <p className="text-muted-foreground text-[11px] mt-0.5">ECE Section B • 6th Semester</p>
+              <p className="text-muted-foreground/50 text-[10px] mt-1">NIT Srinagar • v1.0</p>
+            </div>
           </div>
         </motion.section>
       </motion.div>
