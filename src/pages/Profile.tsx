@@ -28,7 +28,7 @@ const ToggleSwitch = ({ active }: { active: boolean }) => (
 const Profile: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const [hideExamCountdown, setHideExamCountdown] = useState(() => localStorage.getItem('hideExamCountdown') === 'true');
+  const [hideExamCountdown, setHideExamCountdown] = useState(() => localStorage.getItem('hideExamCountdown') !== 'false');
 
   useEffect(() => {
     setNotificationsEnabled(isNotificationEnabled());

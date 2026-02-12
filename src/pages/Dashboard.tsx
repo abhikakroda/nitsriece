@@ -92,7 +92,7 @@ const Dashboard: React.FC = () => {
         </motion.div>
 
         {/* Smart Reminder / Exam Countdown */}
-        {localStorage.getItem('hideExamCountdown') !== 'true' && (
+        {localStorage.getItem('hideExamCountdown') === 'false' && (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-4">
             {(() => {
               const examDate = new Date('2026-04-01T00:00:00');
