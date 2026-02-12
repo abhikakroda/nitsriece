@@ -1,22 +1,10 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
 const pageVariants = {
-  initial: {
-    opacity: 0,
-    y: 12,
-    scale: 0.99,
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  },
-  exit: {
-    opacity: 0,
-    y: -8,
-    scale: 0.99,
-  },
+  initial: { opacity: 0, y: 12, scale: 0.99 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: -8, scale: 0.99 },
 };
 
 const pageTransition = {
@@ -29,22 +17,17 @@ interface PageTransitionProps {
   children: React.ReactNode;
 }
 
-const PageTransition = forwardRef<HTMLDivElement, PageTransitionProps>(({ children }, ref) => {
-  return (
-    <motion.div
-      ref={ref}
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={pageTransition}
-      style={{ minHeight: '100vh' }}
-    >
-      {children}
-    </motion.div>
-  );
-});
-
-PageTransition.displayName = 'PageTransition';
+const PageTransition: React.FC<PageTransitionProps> = ({ children }) => (
+  <motion.div
+    variants={pageVariants}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    transition={pageTransition}
+    style={{ minHeight: '100vh' }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default PageTransition;
