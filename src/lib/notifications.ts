@@ -39,7 +39,8 @@ export function startClassNotifications(classes: ClassInfo[]) {
   stopClassNotifications();
   notifiedClasses.clear();
 
-  notificationIntervalId = setInterval(() => {
+  // Check immediately, then every 15 seconds
+  const check = () => {
     if (!isNotificationEnabled()) return;
 
     const now = new Date();
@@ -50,22 +51,20 @@ export function startClassNotifications(classes: ClassInfo[]) {
       const diff = classMinutes - currentMinutes;
       const key20 = `${cls.subject}_20`;
       const key5 = `${cls.subject}_5`;
-      const keyNow = `${cls.subject}_now`;
 
-      if (diff === 20 && !notifiedClasses.has(key20)) {
+      if (diff >= 19 && diff <= 20 && !notifiedClasses.has(key20)) {
         notifiedClasses.add(key20);
         sendNotification('⏰ Class in 20 minutes', `${cls.subject} starts at ${cls.startTime} in ${cls.room}`);
       }
-      if (diff === 5 && !notifiedClasses.has(key5)) {
+      if (diff >= 4 && diff <= 5 && !notifiedClasses.has(key5)) {
         notifiedClasses.add(key5);
-        sendNotification('🔔 Class in 5 minutes!', `${cls.subject} is about to start in ${cls.room}`);
-      }
-      if (diff === 0 && !notifiedClasses.has(keyNow)) {
-        notifiedClasses.add(keyNow);
-        sendNotification('📚 Class is starting now!', `${cls.subject} is ongoing in ${cls.room}`);
+        sendNotification('🔔 Class in 5 minutes!', `${cls.subject} is about to start in ${cls.room}. Get ready!`);
       }
     }
-  }, 30000); // check every 30 seconds
+  };
+
+  check();
+  notificationIntervalId = setInterval(check, 15000); // check every 15 seconds
 }
 
 export function stopClassNotifications() {

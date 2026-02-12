@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { requestNotificationPermission } from '@/lib/notifications';
+import { requestNotificationPermission, startClassNotifications, stopClassNotifications } from '@/lib/notifications';
 import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData } from '@/lib/timetable';
 import { getAllSubjectStats } from '@/lib/attendance';
 
@@ -20,6 +20,17 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     requestNotificationPermission();
+  }, []);
+
+  useEffect(() => {
+    if (todayClasses.length > 0) {
+      startClassNotifications(todayClasses.map(cls => ({
+        subject: cls.subject,
+        startTime: cls.startTime,
+        room: cls.room,
+      })));
+    }
+    return () => stopClassNotifications();
   }, []);
 
   const todayClasses = getTodayClasses();
