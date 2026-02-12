@@ -36,13 +36,13 @@ const cardVariants = {
   exit: { opacity: 0, y: -8, scale: 0.98, transition: { duration: 0.15 } },
 };
 
-// Color palette for subject cards
+// Color palette for subject cards - vibrant in dark mode
 const subjectColors = [
-  { bg: 'bg-amber-50 dark:bg-amber-500/8', border: 'border-amber-200/60 dark:border-amber-500/12', text: 'text-amber-800 dark:text-amber-300', badge: 'border-amber-300 dark:border-amber-500/25 text-amber-700 dark:text-amber-400' },
-  { bg: 'bg-purple-50 dark:bg-purple-500/8', border: 'border-purple-200/60 dark:border-purple-500/12', text: 'text-purple-800 dark:text-purple-300', badge: 'border-purple-300 dark:border-purple-500/25 text-purple-700 dark:text-purple-400' },
-  { bg: 'bg-green-50 dark:bg-green-500/8', border: 'border-green-200/60 dark:border-green-500/12', text: 'text-green-800 dark:text-green-300', badge: 'border-green-300 dark:border-green-500/25 text-green-700 dark:text-green-400' },
-  { bg: 'bg-blue-50 dark:bg-blue-500/8', border: 'border-blue-200/60 dark:border-blue-500/12', text: 'text-blue-800 dark:text-blue-300', badge: 'border-blue-300 dark:border-blue-500/25 text-blue-700 dark:text-blue-400' },
-  { bg: 'bg-rose-50 dark:bg-rose-500/8', border: 'border-rose-200/60 dark:border-rose-500/12', text: 'text-rose-800 dark:text-rose-300', badge: 'border-rose-300 dark:border-rose-500/25 text-rose-700 dark:text-rose-400' },
+  { bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200/60 dark:border-amber-700/30', text: 'text-amber-800 dark:text-amber-200', badge: 'border-amber-300 dark:border-amber-600/40 text-amber-700 dark:text-amber-300' },
+  { bg: 'bg-purple-50 dark:bg-purple-950/40', border: 'border-purple-200/60 dark:border-purple-700/30', text: 'text-purple-800 dark:text-purple-200', badge: 'border-purple-300 dark:border-purple-600/40 text-purple-700 dark:text-purple-300' },
+  { bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200/60 dark:border-emerald-700/30', text: 'text-emerald-800 dark:text-emerald-200', badge: 'border-emerald-300 dark:border-emerald-600/40 text-emerald-700 dark:text-emerald-300' },
+  { bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200/60 dark:border-blue-700/30', text: 'text-blue-800 dark:text-blue-200', badge: 'border-blue-300 dark:border-blue-600/40 text-blue-700 dark:text-blue-300' },
+  { bg: 'bg-rose-50 dark:bg-rose-950/40', border: 'border-rose-200/60 dark:border-rose-700/30', text: 'text-rose-800 dark:text-rose-200', badge: 'border-rose-300 dark:border-rose-600/40 text-rose-700 dark:text-rose-300' },
 ];
 
 const Schedule: React.FC = () => {
