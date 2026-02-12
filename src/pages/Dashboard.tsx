@@ -26,10 +26,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6 relative overflow-x-hidden">
-      {/* Liquid Blobs */}
-      <div className="liquid-blob top-[-8%] left-[-8%] w-80 h-80 bg-primary/15 dark:bg-primary/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob" />
-      <div className="liquid-blob top-[25%] right-[-8%] w-72 h-72 bg-blue-400/15 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000" />
-      <div className="liquid-blob bottom-[-5%] left-[25%] w-96 h-96 bg-violet-300/12 dark:bg-violet-500/8 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000" />
+      {/* Liquid Blobs - GPU accelerated */}
+      <div className="liquid-blob top-[-8%] left-[-8%] w-80 h-80 bg-primary/15 dark:bg-primary/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob will-change-transform pointer-events-none" />
+      <div className="liquid-blob top-[25%] right-[-8%] w-72 h-72 bg-blue-400/15 dark:bg-blue-500/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000 will-change-transform pointer-events-none" />
+      <div className="liquid-blob bottom-[-5%] left-[25%] w-96 h-96 bg-violet-300/12 dark:bg-violet-500/8 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000 will-change-transform pointer-events-none" />
 
 
       <motion.div className="max-w-3xl mx-auto w-full" variants={stagger} initial="hidden" animate="visible">
