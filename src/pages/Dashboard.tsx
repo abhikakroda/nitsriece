@@ -45,11 +45,19 @@ const Dashboard: React.FC = () => {
   const overallPercent = totalClasses > 0 ? Math.round((totalPresent / totalClasses) * 100) : 0;
   const weeklyTotal = Object.values(timetableData).reduce((a, d) => a + d.length, 0);
 
+  // Find next upcoming class
+  const nextClass = todayClasses.find(cls => getClassStatus(cls.startTime) === 'upcoming');
+  const currentClass = todayClasses.find(cls => getClassStatus(cls.startTime) === 'current');
+  const doneCount = todayClasses.filter(cls => getClassStatus(cls.startTime) === 'done').length;
+
+  // Subjects below 75%
+  const atRisk = statEntries.filter(([, s]) => s.total > 0 && s.percentage < 75);
+
   return (
-    <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6 relative overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-background pb-24 lg:pb-6 relative overflow-x-hidden">
       <motion.div className="max-w-3xl mx-auto w-full relative z-10" variants={stagger} initial="hidden" animate="visible">
         {/* Greeting */}
-        <motion.div variants={fadeUp} className="px-5 md:px-6 pt-8 pb-2">
+        <motion.div variants={fadeUp} className="px-5 md:px-6 pt-8 pb-1">
           <p className="text-muted-foreground text-[12px] font-medium">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </p>
@@ -58,26 +66,78 @@ const Dashboard: React.FC = () => {
           </h1>
         </motion.div>
 
-        {/* Stat Cards */}
-        <motion.div variants={fadeUp} className="px-5 md:px-6 py-4">
-          <div className="grid grid-cols-3 gap-2">
+        {/* Now / Next class highlight */}
+        {(currentClass || nextClass) && (
+          <motion.div variants={fadeUp} className="px-5 md:px-6 pt-4 pb-2">
+            {currentClass ? (
+              <div className="rounded-2xl bg-foreground dark:bg-card p-4 border border-transparent dark:border-border/40">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] font-bold text-background/60 dark:text-muted-foreground uppercase tracking-widest">Now</span>
+                </div>
+                <h3 className="font-display font-bold text-[18px] md:text-[20px] text-background dark:text-foreground leading-tight">{currentClass.subject}</h3>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <span className="text-[11px] text-background/50 dark:text-muted-foreground">{currentClass.time}</span>
+                  <span className="text-[11px] text-background/50 dark:text-muted-foreground">{currentClass.room}</span>
+                  <span className="text-[11px] text-background/50 dark:text-muted-foreground">{currentClass.faculty || 'TBA'}</span>
+                </div>
+              </div>
+            ) : nextClass ? (
+              <div className="rounded-2xl bg-card border border-border/40 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Up Next</span>
+                </div>
+                <h3 className="font-display font-bold text-[18px] md:text-[20px] text-foreground leading-tight">{nextClass.subject}</h3>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <span className="text-[11px] text-muted-foreground">{nextClass.time}</span>
+                  <span className="text-[11px] text-muted-foreground">{nextClass.room}</span>
+                  <span className="text-[11px] text-muted-foreground">{nextClass.faculty || 'TBA'}</span>
+                </div>
+              </div>
+            ) : null}
+          </motion.div>
+        )}
+
+        {/* Stats Row */}
+        <motion.div variants={fadeUp} className="px-5 md:px-6 py-3">
+          <div className="grid grid-cols-4 gap-2">
             {[
-              { label: 'Today', value: String(todayClasses.length), sub: todayClasses.length === 1 ? 'class' : 'classes' },
-              { label: 'Weekly', value: String(weeklyTotal), sub: 'total' },
-              { label: 'Attendance', value: totalClasses > 0 ? `${overallPercent}%` : '—', sub: totalClasses > 0 ? 'overall' : 'no data' },
+              { label: 'Today', value: String(todayClasses.length) },
+              { label: 'Done', value: String(doneCount) },
+              { label: 'Weekly', value: String(weeklyTotal) },
+              { label: 'Attend.', value: totalClasses > 0 ? `${overallPercent}%` : '—' },
             ].map((stat, i) => (
-              <div key={i} className="rounded-2xl bg-card border border-border/40 p-3.5">
-                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
-                <p className="font-display text-[22px] md:text-[26px] font-bold text-foreground leading-none mt-1">{stat.value}</p>
-                <p className="text-[10px] text-muted-foreground/70 mt-0.5">{stat.sub}</p>
+              <div key={i} className="rounded-2xl bg-card border border-border/40 p-3 text-center">
+                <p className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+                <p className="font-display text-[20px] md:text-[22px] font-bold text-foreground leading-none mt-1">{stat.value}</p>
               </div>
             ))}
           </div>
         </motion.div>
 
+        {/* Attendance Alert */}
+        {atRisk.length > 0 && (
+          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
+            <div className="rounded-2xl border border-rose-500/15 bg-rose-500/5 dark:bg-rose-500/8 p-3.5">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="material-symbols-outlined text-rose-500 text-[16px]">warning</span>
+                <span className="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest">Low Attendance</span>
+              </div>
+              <div className="space-y-1">
+                {atRisk.map(([name, s]) => (
+                  <div key={name} className="flex items-center justify-between">
+                    <span className="text-[11px] text-foreground/80 truncate flex-1 mr-2">{name}</span>
+                    <span className="text-[11px] font-bold text-rose-500">{s.percentage}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* Exam Countdown */}
         {localStorage.getItem('hideExamCountdown') === 'false' && (
-          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-4">
+          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
             {(() => {
               const examDate = new Date('2026-04-01T00:00:00');
               const now = new Date();
@@ -86,29 +146,27 @@ const Dashboard: React.FC = () => {
               const weeks = Math.floor(totalDays / 7);
               const remainingDays = totalDays % 7;
               return (
-                <div className="bg-gradient-to-r from-orange-500 to-rose-500 rounded-2xl p-4 text-white overflow-hidden relative">
-                  <div className="relative z-10 flex items-center justify-between">
-                    <div>
-                      <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Sessional Exams</p>
-                      <p className="font-display text-[18px] font-bold mt-0.5">
-                        {totalDays > 0 ? `${totalDays} days to go` : 'Exams have started!'}
-                      </p>
-                      <p className="text-white/50 text-[11px] mt-0.5">
-                        {totalDays > 0 ? `${weeks}w ${remainingDays}d` : 'Good luck!'} • Apr 1
-                      </p>
-                    </div>
-                    <span className="material-symbols-outlined text-white/20 text-[36px]">timer</span>
+                <div className="rounded-2xl border border-border/40 bg-card p-3.5 flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Sessionals</p>
+                    <p className="font-display text-[16px] font-bold text-foreground mt-0.5">
+                      {totalDays > 0 ? `${totalDays} days` : 'Started'}
+                    </p>
+                    <p className="text-muted-foreground text-[10px] mt-0.5">
+                      {totalDays > 0 ? `${weeks}w ${remainingDays}d remaining` : 'Good luck!'} • Apr 1
+                    </p>
                   </div>
+                  <span className="material-symbols-outlined text-muted-foreground/20 text-[28px]">event</span>
                 </div>
               );
             })()}
           </motion.div>
         )}
 
-        {/* Today's Classes */}
-        <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
-          <div className="flex items-baseline justify-between mb-3">
-            <h2 className="font-display text-[16px] md:text-[18px] font-bold text-foreground">Today's Classes</h2>
+        {/* Today's Schedule */}
+        <motion.div variants={fadeUp} className="px-5 md:px-6 pt-2 pb-2">
+          <div className="flex items-baseline justify-between mb-2">
+            <h2 className="text-[12px] font-bold text-muted-foreground uppercase tracking-widest">Today's Schedule</h2>
             <button onClick={() => navigate('/schedule')} className="text-primary text-[11px] font-semibold flex items-center gap-0.5">
               Full week
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
@@ -119,42 +177,52 @@ const Dashboard: React.FC = () => {
         {todayClasses.length === 0 ? (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-6">
             <div className="rounded-2xl border border-border/40 bg-card p-6 text-center">
-              <p className="text-muted-foreground text-[13px]">No classes today 🎉</p>
+              <p className="text-muted-foreground text-[13px]">No classes today</p>
               <p className="text-muted-foreground/50 text-[11px] mt-1">Enjoy your {dayNames[todayDay]}</p>
             </div>
           </motion.div>
         ) : (
-          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-6 space-y-2">
-            {todayClasses.map((cls, idx) => {
-              const status = getClassStatus(cls.startTime);
-              return (
-                <div
-                  key={idx}
-                  className={`rounded-2xl bg-card border border-border/40 p-4 transition-opacity ${
-                    status === 'done' ? 'opacity-40' : ''
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
-                          {cls.type || 'Lecture'}
-                        </span>
-                        {status === 'current' && (
-                          <span className="text-[9px] font-bold text-primary bg-primary/8 px-1.5 py-0.5 rounded-full">● Live</span>
-                        )}
-                      </div>
-                      <h3 className="font-display font-bold text-[15px] md:text-[17px] text-foreground leading-tight">{cls.subject}</h3>
-                      <div className="flex items-center gap-3 mt-1.5">
-                        <span className="text-[11px] text-muted-foreground">{cls.faculty || 'TBA'}</span>
-                        <span className="text-[11px] text-muted-foreground">{cls.room}</span>
-                      </div>
+          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-4">
+            <div className="rounded-2xl bg-card border border-border/40 divide-y divide-border/30">
+              {todayClasses.map((cls, idx) => {
+                const status = getClassStatus(cls.startTime);
+                return (
+                  <div
+                    key={idx}
+                    className={`px-4 py-3 flex items-center gap-3 transition-opacity ${
+                      status === 'done' ? 'opacity-35' : ''
+                    }`}
+                  >
+                    {/* Time */}
+                    <div className="w-[42px] shrink-0 text-center">
+                      <p className="text-[11px] font-bold text-foreground leading-none">{cls.startTime}</p>
                     </div>
-                    <span className="text-[11px] font-medium text-muted-foreground shrink-0">{cls.time}</span>
+
+                    {/* Status dot */}
+                    <div className="shrink-0">
+                      {status === 'current' ? (
+                        <span className="size-2 rounded-full bg-emerald-500 block animate-pulse" />
+                      ) : status === 'done' ? (
+                        <span className="material-symbols-outlined text-[14px] text-muted-foreground/40">check_circle</span>
+                      ) : (
+                        <span className="size-2 rounded-full border-2 border-border block" />
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-semibold text-foreground leading-tight truncate">{cls.subject}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{cls.faculty || 'TBA'} · {cls.room}</p>
+                    </div>
+
+                    {/* Type badge */}
+                    <span className="text-[9px] font-medium text-muted-foreground/60 uppercase tracking-wider shrink-0">
+                      {cls.type || 'Lec'}
+                    </span>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </motion.div>
         )}
 
