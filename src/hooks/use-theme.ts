@@ -16,6 +16,12 @@ export function useTheme() {
       root.classList.remove('dark');
     }
     localStorage.setItem('theme', theme);
+
+    // Update status bar color for PWA
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#0f1119' : '#f3f4f8');
+    }
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
