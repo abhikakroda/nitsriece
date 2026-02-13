@@ -1,15 +1,6 @@
 import React, { useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { getSubjectStats, getAll as getAllAttendance } from '@/lib/attendance';
 import { timetableData } from '@/lib/timetable';
-
-const tooltipStyle = {
-  background: 'hsl(var(--card))',
-  border: '1px solid hsl(var(--border))',
-  borderRadius: '10px',
-  fontSize: '11px',
-  color: 'hsl(var(--foreground))',
-};
 
 const AttendanceAnalytics: React.FC = () => {
   const records = useMemo(() => getAllAttendance(), []);
@@ -33,11 +24,6 @@ const AttendanceAnalytics: React.FC = () => {
   const total = totalPresent + totalAbsent;
   const pct = total > 0 ? Math.round((totalPresent / total) * 100) : 0;
 
-  const barData = allSubjects.map(s => ({
-    name: s.length > 10 ? s.slice(0, 10) + '…' : s,
-    Present: stats[s].present,
-    Absent: stats[s].absent,
-  }));
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6">
@@ -77,22 +63,6 @@ const AttendanceAnalytics: React.FC = () => {
           ))}
         </div>
 
-        {/* Chart */}
-        {total > 0 && (
-          <div className="rounded-2xl bg-card border border-border/40 p-4">
-            <p className="text-muted-foreground text-[10px] font-medium uppercase tracking-widest mb-3">By Subject</p>
-            <ResponsiveContainer width="100%" height={160}>
-              <BarChart data={barData} barGap={2} barSize={8}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 8 }} axisLine={false} tickLine={false} interval={0} angle={-15} textAnchor="end" height={40} />
-                <YAxis tick={{ fontSize: 9 }} axisLine={false} tickLine={false} allowDecimals={false} />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Bar dataKey="Present" fill="hsl(var(--foreground))" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="Absent" fill="hsl(var(--border))" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
 
         {/* Subject list */}
         <div>
