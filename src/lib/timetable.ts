@@ -13,7 +13,7 @@ export interface ClassSlot {
 export const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const;
 export type Day = typeof days[number];
 
-export const timetableData: Record<Day, ClassSlot[]> = {
+const defaultTimetable: Record<Day, ClassSlot[]> = {
   Mon: [
     { subject: 'Computer Org & Arch', time: '09:50 – 10:40', startTime: '09:50', room: 'L-15', icon: 'memory', iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500', faculty: 'Dr. Kajal' },
     { subject: 'VLSI Design Lab', time: '10:40 – 12:20', startTime: '10:40', room: 'Lab', icon: 'science', iconBg: 'bg-purple-500/10', iconColor: 'text-purple-500', type: 'Lab', faculty: 'Dr. S.A. Ahsan' },
@@ -42,6 +42,56 @@ export const timetableData: Record<Day, ClassSlot[]> = {
   ],
 };
 
+const TIMETABLE_KEY = 'campus_timetable';
+const EXAM_DATE_KEY = 'campus_exam_date';
+const DEFAULT_EXAM_DATE = '2026-04-01';
+
+// Listeners for reactivity
+type Listener = () => void;
+const listeners: Set<Listener> = new Set();
+
+export function subscribe(fn: Listener) {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+function notify() {
+  listeners.forEach(fn => fn());
+}
+
+export function getTimetableData(): Record<Day, ClassSlot[]> {
+  try {
+    const stored = localStorage.getItem(TIMETABLE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return defaultTimetable;
+}
+
+export function saveTimetableData(data: Record<Day, ClassSlot[]>) {
+  localStorage.setItem(TIMETABLE_KEY, JSON.stringify(data));
+  // Update the mutable export
+  Object.assign(timetableData, data);
+  notify();
+}
+
+export function resetTimetableData() {
+  localStorage.removeItem(TIMETABLE_KEY);
+  Object.assign(timetableData, defaultTimetable);
+  notify();
+}
+
+export function getExamDate(): string {
+  return localStorage.getItem(EXAM_DATE_KEY) || DEFAULT_EXAM_DATE;
+}
+
+export function setExamDate(date: string) {
+  localStorage.setItem(EXAM_DATE_KEY, date);
+  notify();
+}
+
+// Mutable timetable that other modules import
+export const timetableData: Record<Day, ClassSlot[]> = getTimetableData();
+
 export const dayNames: Record<Day, string> = {
   Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday',
 };
@@ -56,7 +106,6 @@ export function getTodayClasses(): ClassSlot[] {
   return timetableData[getTodayDay()] || [];
 }
 
-/** Returns 'current', 'upcoming', or 'done' based on current time */
 export function getClassStatus(startTime: string, durationMin = 50): 'current' | 'upcoming' | 'done' {
   const now = new Date();
   const currentMin = now.getHours() * 60 + now.getMinutes();
