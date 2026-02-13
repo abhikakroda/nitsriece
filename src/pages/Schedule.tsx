@@ -45,7 +45,7 @@ const Schedule: React.FC = () => {
   return (
     <div className="bg-background min-h-screen flex flex-col pb-20 lg:pb-6">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl px-5 md:px-6 pt-5 pb-4 border-b border-border/30">
+      <div className="sticky top-0 z-50 liquid-glass-nav px-5 md:px-6 pt-5 pb-4 border-b border-white/20 dark:border-white/5">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -72,7 +72,7 @@ const Schedule: React.FC = () => {
                   className={`relative flex-1 flex flex-col items-center py-2 rounded-xl transition-colors duration-200 ${
                     isSelected
                       ? 'bg-foreground text-background'
-                      : 'text-muted-foreground hover:bg-secondary/50'
+                      : 'text-muted-foreground hover:bg-white/20 dark:hover:bg-white/5'
                   }`}
                 >
                   <span className={`text-[9px] font-bold uppercase tracking-wider ${isSelected ? 'text-background/60' : ''}`}>
@@ -121,7 +121,7 @@ const Schedule: React.FC = () => {
                         </div>
 
                         {/* Card */}
-                        <div className="flex-1 rounded-2xl bg-card border border-border/40 p-4 mb-2">
+                        <div className="flex-1 rounded-2xl liquid-glass-card p-4 mb-2">
                           <div className="flex items-start justify-between">
                             <div className="min-w-0">
                               <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
@@ -149,7 +149,7 @@ const Schedule: React.FC = () => {
                                 className={`text-[11px] font-medium py-2 rounded-xl transition-all active:scale-[0.96] ${
                                   attendance === 'present'
                                     ? 'bg-emerald-500 text-white'
-                                    : 'bg-secondary/60 text-muted-foreground hover:bg-emerald-500/10 hover:text-emerald-600'
+                                    : 'bg-white/30 dark:bg-white/5 text-muted-foreground hover:bg-emerald-500/10 hover:text-emerald-600'
                                 }`}
                               >
                                 {attendance === 'present' ? 'Present ✓' : 'Present'}
@@ -159,7 +159,7 @@ const Schedule: React.FC = () => {
                                 className={`text-[11px] font-medium py-2 rounded-xl transition-all active:scale-[0.96] ${
                                   attendance === 'absent'
                                     ? 'bg-rose-500 text-white'
-                                    : 'bg-secondary/60 text-muted-foreground hover:bg-rose-500/10 hover:text-rose-500'
+                                    : 'bg-white/30 dark:bg-white/5 text-muted-foreground hover:bg-rose-500/10 hover:text-rose-500'
                                 }`}
                               >
                                 {attendance === 'absent' ? 'Absent ✓' : 'Absent'}

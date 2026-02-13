@@ -35,14 +35,14 @@ const Profile: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6">
-      <div className="bg-background/80 backdrop-blur-xl flex items-center px-5 py-3.5 border-b border-border/30">
+      <div className="liquid-glass-nav flex items-center px-5 py-3.5 border-b border-white/20 dark:border-white/5">
         <h2 className="font-display text-foreground text-[18px] md:text-[20px] font-bold tracking-tight flex-1 text-center lg:text-left">Settings</h2>
       </div>
 
       <motion.div className="max-w-3xl mx-auto w-full px-5 md:px-6 space-y-5 pt-6 pb-6" variants={stagger} initial="hidden" animate="visible">
         <motion.section variants={fadeUp}>
           <h3 className="text-muted-foreground text-[10px] font-medium uppercase tracking-widest px-1 mb-2">Preferences</h3>
-          <div className="bg-card rounded-2xl border border-border/40 divide-y divide-border/30">
+          <div className="liquid-glass rounded-2xl divide-y divide-white/15 dark:divide-white/5">
             {/* Dark Mode */}
             <button className="flex items-center w-full gap-3 px-4 py-3.5 justify-between" onClick={toggleTheme}>
               <div className="flex items-center gap-3">
@@ -52,8 +52,8 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">{theme === 'dark' ? 'On' : 'Off'}</p>
                 </div>
               </div>
-              <div className={`w-[38px] h-[22px] rounded-full p-0.5 transition-colors ${theme === 'dark' ? 'bg-foreground' : 'bg-border'}`}>
-                <motion.div className="h-[18px] w-[18px] rounded-full bg-background" animate={{ x: theme === 'dark' ? 16 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
+              <div className={`w-[38px] h-[22px] rounded-full p-0.5 transition-colors ${theme === 'dark' ? 'bg-foreground' : 'bg-white/30 dark:bg-white/10'}`}>
+                <motion.div className="h-[18px] w-[18px] rounded-full bg-background shadow-sm" animate={{ x: theme === 'dark' ? 16 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
               </div>
             </button>
 
@@ -66,8 +66,8 @@ const Profile: React.FC = () => {
                   <p className="text-muted-foreground text-[10px]">Show on dashboard</p>
                 </div>
               </div>
-              <div className={`w-[38px] h-[22px] rounded-full p-0.5 transition-colors ${!hideExamCountdown ? 'bg-foreground' : 'bg-border'}`}>
-                <motion.div className="h-[18px] w-[18px] rounded-full bg-background" animate={{ x: !hideExamCountdown ? 16 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
+              <div className={`w-[38px] h-[22px] rounded-full p-0.5 transition-colors ${!hideExamCountdown ? 'bg-foreground' : 'bg-white/30 dark:bg-white/10'}`}>
+                <motion.div className="h-[18px] w-[18px] rounded-full bg-background shadow-sm" animate={{ x: !hideExamCountdown ? 16 : 0 }} transition={{ type: 'spring', stiffness: 500, damping: 35 }} />
               </div>
             </button>
 
@@ -93,7 +93,7 @@ const Profile: React.FC = () => {
 
         <motion.section variants={fadeUp}>
           <h3 className="text-muted-foreground text-[10px] font-medium uppercase tracking-widest px-1 mb-2">About</h3>
-          <div className="bg-card rounded-2xl border border-border/40 px-4 py-4 flex items-center gap-3.5">
+          <div className="liquid-glass-card rounded-2xl px-4 py-4 flex items-center gap-3.5">
             <img src="/pwa-192x192.png" alt="Time Table" className="size-10 rounded-xl" />
             <div>
               <p className="text-foreground text-[13px] font-medium">Time Table</p>

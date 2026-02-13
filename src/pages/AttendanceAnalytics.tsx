@@ -24,11 +24,10 @@ const AttendanceAnalytics: React.FC = () => {
   const total = totalPresent + totalAbsent;
   const pct = total > 0 ? Math.round((totalPresent / total) * 100) : 0;
 
-
   return (
     <div className="flex flex-col min-h-screen bg-background pb-20 lg:pb-6">
       {/* Header */}
-      <div className="bg-background/80 backdrop-blur-xl flex items-center px-5 py-3.5 border-b border-border/30">
+      <div className="liquid-glass-nav flex items-center px-5 py-3.5 border-b border-white/20 dark:border-white/5">
         <h2 className="font-display text-foreground text-[18px] md:text-[20px] font-bold tracking-tight flex-1 text-center lg:text-left">
           Analytics
         </h2>
@@ -36,14 +35,14 @@ const AttendanceAnalytics: React.FC = () => {
 
       <div className="max-w-3xl mx-auto w-full px-5 space-y-4 pt-5 pb-6">
         {/* Overall */}
-        <div className="rounded-2xl bg-card border border-border/40 p-5">
+        <div className="rounded-2xl liquid-glass p-5">
           <p className="text-muted-foreground text-[10px] font-medium uppercase tracking-widest">Overall Attendance</p>
           <div className="flex items-end gap-3 mt-1">
             <span className="font-display text-[38px] font-bold text-foreground leading-none">{total > 0 ? `${pct}%` : '—'}</span>
             <span className="text-muted-foreground text-[12px] mb-1">{totalPresent}/{total} classes</span>
           </div>
           {total > 0 && (
-            <div className="w-full h-1.5 bg-secondary rounded-full mt-3 overflow-hidden">
+            <div className="w-full h-1.5 bg-white/15 dark:bg-white/5 rounded-full mt-3 overflow-hidden">
               <div className="h-full bg-foreground rounded-full transition-all" style={{ width: `${pct}%` }} />
             </div>
           )}
@@ -56,13 +55,12 @@ const AttendanceAnalytics: React.FC = () => {
             { label: 'Absent', val: totalAbsent },
             { label: 'Subjects', val: allSubjects.length },
           ].map(s => (
-            <div key={s.label} className="rounded-2xl bg-card border border-border/40 p-3 text-center">
+            <div key={s.label} className="rounded-2xl liquid-glass-card p-3 text-center">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{s.label}</p>
               <p className="font-display text-[20px] font-bold text-foreground leading-none mt-1">{s.val}</p>
             </div>
           ))}
         </div>
-
 
         {/* Subject list */}
         <div>
@@ -72,10 +70,10 @@ const AttendanceAnalytics: React.FC = () => {
               const s = stats[subject];
               const hasData = s.total > 0;
               return (
-                <div key={subject} className="rounded-2xl bg-card border border-border/40 p-3 flex items-center gap-3">
+                <div key={subject} className="rounded-2xl liquid-glass-card p-3 flex items-center gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-[12px] font-semibold text-foreground truncate">{subject}</p>
-                    <div className="w-full h-1 bg-secondary rounded-full overflow-hidden mt-1.5">
+                    <div className="w-full h-1 bg-white/10 dark:bg-white/5 rounded-full overflow-hidden mt-1.5">
                       <div
                         className="h-full rounded-full bg-foreground transition-all"
                         style={{ width: hasData ? `${s.percentage}%` : '0%' }}
