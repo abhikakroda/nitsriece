@@ -59,14 +59,17 @@ const Schedule: React.FC = () => {
 
           {/* Day Selector */}
           <div className="flex gap-1">
-            {days.map(day => {
+            {days.map((day, i) => {
               const isSelected = selectedDay === day;
               const isToday = day === today;
               return (
-                <button
+                <motion.button
                   key={day}
                   onClick={() => setSelectedDay(day)}
-                  className={`relative flex-1 flex flex-col items-center py-2 rounded-xl transition-all duration-200 ${
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className={`relative flex-1 flex flex-col items-center py-2 rounded-xl transition-colors duration-200 ${
                     isSelected
                       ? 'bg-foreground text-background'
                       : 'text-muted-foreground hover:bg-secondary/50'
@@ -81,7 +84,7 @@ const Schedule: React.FC = () => {
                   {isToday && !isSelected && (
                     <span className="absolute bottom-1 size-[3px] rounded-full bg-primary" />
                   )}
-                </button>
+                </motion.button>
               );
             })}
           </div>
