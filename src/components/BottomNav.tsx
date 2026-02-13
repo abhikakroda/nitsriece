@@ -15,26 +15,39 @@ const BottomNav: React.FC = () => {
 
   return (
     <>
-      {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 liquid-glass-nav border-t border-border/30 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-        <div className="flex items-center justify-around h-[56px] max-w-lg mx-auto">
+      {/* Mobile floating bar */}
+      <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <div className="flex items-center gap-1 bg-foreground/80 dark:bg-card/80 backdrop-blur-2xl rounded-full px-2 py-1.5 shadow-2xl shadow-black/20 dark:shadow-black/50 border border-white/10 dark:border-white/5">
           {tabs.map(tab => {
             const isActive = location.pathname === tab.path;
             return (
               <button
                 key={tab.path}
                 onClick={() => navigate(tab.path)}
-                className="relative flex flex-col items-center justify-center gap-[2px] min-w-[56px] py-1 transition-all duration-200"
+                className="relative flex items-center justify-center rounded-full transition-all duration-200 active:scale-90"
               >
                 {isActive && (
                   <motion.div
-                    layoutId="bottomNavIndicator"
-                    className="absolute -top-[1px] w-6 h-[2.5px] rounded-full bg-primary"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    layoutId="floatingNavPill"
+                    className="absolute inset-0 bg-white/20 dark:bg-white/10 rounded-full"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
-                <span className={`material-symbols-outlined text-[22px] transition-all duration-200 ${isActive ? 'text-primary fill-1 scale-105' : 'text-muted-foreground'}`}>{tab.icon}</span>
-                <span className={`text-[9px] font-semibold leading-tight transition-colors duration-200 ${isActive ? 'text-primary' : 'text-muted-foreground/70'}`}>{tab.label}</span>
+                <div className={`relative z-10 flex items-center gap-1.5 px-4 py-2 ${isActive ? '' : ''}`}>
+                  <span className={`material-symbols-outlined text-[20px] transition-all duration-200 ${
+                    isActive ? 'text-white fill-1' : 'text-white/40 dark:text-white/35'
+                  }`}>{tab.icon}</span>
+                  {isActive && (
+                    <motion.span
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: 'auto' }}
+                      exit={{ opacity: 0, width: 0 }}
+                      className="text-[11px] font-semibold text-white overflow-hidden whitespace-nowrap"
+                    >
+                      {tab.label}
+                    </motion.span>
+                  )}
+                </div>
               </button>
             );
           })}
@@ -42,14 +55,12 @@ const BottomNav: React.FC = () => {
       </nav>
 
       {/* Desktop sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 z-50 w-[220px] flex-col liquid-glass-nav border-r border-border/30 py-6 px-3">
+      <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 z-50 w-[220px] flex-col bg-background/80 backdrop-blur-xl border-r border-border/30 py-6 px-3">
         <div className="flex items-center gap-2.5 px-3 mb-10">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-blue-500 flex items-center justify-center shadow-md shadow-primary/20">
-            <span className="material-symbols-outlined text-white text-[18px]">school</span>
-          </div>
+          <img src="/pwa-192x192.png" alt="Time Table" className="size-8 rounded-lg" />
           <div>
-            <h2 className="font-display text-foreground text-[14px] font-bold leading-tight">Campus</h2>
-            <p className="text-primary text-[9px] font-bold tracking-widest uppercase">ECE • Sec B</p>
+            <h2 className="font-display text-foreground text-[14px] font-bold leading-tight">Time Table</h2>
+            <p className="text-muted-foreground text-[9px] font-bold tracking-widest uppercase">ECE • Sec B</p>
           </div>
         </div>
         <div className="space-y-0.5">
@@ -61,14 +72,14 @@ const BottomNav: React.FC = () => {
                 onClick={() => navigate(tab.path)}
                 className={`relative flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
                   isActive
-                    ? 'text-primary font-semibold'
-                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
+                    ? 'text-foreground font-semibold'
+                    : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'
                 }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="sidebarIndicator"
-                    className="absolute inset-0 bg-primary/8 border border-primary/12 rounded-xl"
+                    className="absolute inset-0 bg-secondary rounded-xl"
                     transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -78,9 +89,8 @@ const BottomNav: React.FC = () => {
             );
           })}
         </div>
-        <div className="mt-auto px-3 pt-4 border-t border-border/50">
-          <p className="text-muted-foreground/50 text-[10px] font-medium">Campus Companion v1.0</p>
-          <p className="text-muted-foreground/30 text-[9px] mt-0.5">NIT Srinagar • ECE Dept</p>
+        <div className="mt-auto px-3 pt-4 border-t border-border/30">
+          <p className="text-muted-foreground/40 text-[10px] font-medium">NIT Srinagar • ECE Dept</p>
         </div>
       </nav>
     </>
