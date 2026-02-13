@@ -17,7 +17,7 @@ const BottomNav: React.FC = () => {
     <>
       {/* Mobile floating bar */}
       <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-        <div className="flex items-center gap-1 bg-foreground/80 dark:bg-card/80 backdrop-blur-2xl rounded-full px-2 py-1.5 shadow-2xl shadow-black/20 dark:shadow-black/50 border border-white/10 dark:border-white/5">
+        <div className="flex items-center gap-1 liquid-glass-float rounded-[22px] px-2 py-1.5">
           {tabs.map(tab => {
             const isActive = location.pathname === tab.path;
             return (
@@ -29,20 +29,21 @@ const BottomNav: React.FC = () => {
                 {isActive && (
                   <motion.div
                     layoutId="floatingNavPill"
-                    className="absolute inset-0 bg-white/20 dark:bg-white/10 rounded-full"
+                    className="absolute inset-0 rounded-[16px]"
+                    style={{ background: 'rgba(0,0,0,0.06)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -0.5px 0 rgba(0,0,0,0.04)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
                 <div className={`relative z-10 flex items-center gap-1.5 px-4 py-2 ${isActive ? '' : ''}`}>
                   <span className={`material-symbols-outlined text-[20px] transition-all duration-200 ${
-                    isActive ? 'text-white fill-1' : 'text-white/40 dark:text-white/35'
+                    isActive ? 'text-foreground fill-1' : 'text-muted-foreground/60'
                   }`}>{tab.icon}</span>
                   {isActive && (
                     <motion.span
                       initial={{ opacity: 0, width: 0 }}
                       animate={{ opacity: 1, width: 'auto' }}
                       exit={{ opacity: 0, width: 0 }}
-                      className="text-[11px] font-semibold text-white overflow-hidden whitespace-nowrap"
+                      className="text-[11px] font-semibold text-foreground overflow-hidden whitespace-nowrap"
                     >
                       {tab.label}
                     </motion.span>
