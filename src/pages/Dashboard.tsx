@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { requestNotificationPermission, startClassNotifications, stopClassNotifications } from '@/lib/notifications';
-import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData } from '@/lib/timetable';
+import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData, getExamDate } from '@/lib/timetable';
 import { getAllSubjectStats } from '@/lib/attendance';
 
 const stagger = {
@@ -136,12 +136,14 @@ const Dashboard: React.FC = () => {
         {localStorage.getItem('hideExamCountdown') === 'false' && (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
             {(() => {
-              const examDate = new Date('2026-04-01T00:00:00');
+              const examDateStr = getExamDate();
+              const examDateObj = new Date(examDateStr + 'T00:00:00');
               const now = new Date();
-              const diffMs = examDate.getTime() - now.getTime();
+              const diffMs = examDateObj.getTime() - now.getTime();
               const totalDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
               const weeks = Math.floor(totalDays / 7);
               const remainingDays = totalDays % 7;
+              const dateLabel = examDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
               return (
                 <div className="rounded-2xl liquid-glass-card p-3.5 flex items-center justify-between">
                   <div>
@@ -150,7 +152,7 @@ const Dashboard: React.FC = () => {
                       {totalDays > 0 ? `${totalDays} days` : 'Started'}
                     </p>
                     <p className="text-muted-foreground text-[10px] mt-0.5">
-                      {totalDays > 0 ? `${weeks}w ${remainingDays}d remaining` : 'Good luck!'} • Apr 1
+                      {totalDays > 0 ? `${weeks}w ${remainingDays}d remaining` : 'Good luck!'} • {dateLabel}
                     </p>
                   </div>
                   <span className="material-symbols-outlined text-muted-foreground/20 text-[28px]">event</span>
