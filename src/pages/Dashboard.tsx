@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
           </p>
           <h1 className="font-display text-[26px] md:text-[32px] font-bold text-foreground tracking-tight leading-[1.15] mt-0.5">
-            {greeting} 👋
+            {greeting}
           </h1>
         </motion.div>
 
