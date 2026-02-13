@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Schedule from "./pages/Schedule";
 import Profile from "./pages/Profile";
-import GpaCalculator from "./pages/GpaCalculator";
 import AttendanceAnalytics from "./pages/AttendanceAnalytics";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
@@ -15,7 +14,6 @@ const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Dashboard />} />
     <Route path="/schedule" element={<Schedule />} />
-    <Route path="/gpa" element={<GpaCalculator />} />
     <Route path="/analytics" element={<AttendanceAnalytics />} />
     <Route path="/profile" element={<Profile />} />
     <Route path="*" element={<NotFound />} />
