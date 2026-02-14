@@ -96,14 +96,18 @@ export const dayNames: Record<Day, string> = {
   Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday',
 };
 
-export function getTodayDay(): Day {
+export function getTodayDay(): Day | null {
   const d = new Date().getDay();
-  const map: Day[] = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  return map[d] || 'Mon';
+  // 0=Sun, 6=Sat → no classes
+  if (d === 0 || d === 6) return null;
+  const map: Day[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  return map[d - 1];
 }
 
 export function getTodayClasses(): ClassSlot[] {
-  return timetableData[getTodayDay()] || [];
+  const day = getTodayDay();
+  if (!day) return [];
+  return timetableData[day] || [];
 }
 
 export function getClassStatus(startTime: string, durationMin = 50): 'current' | 'upcoming' | 'done' {
