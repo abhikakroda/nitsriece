@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { requestNotificationPermission, startClassNotifications, stopClassNotifications } from '@/lib/notifications';
 import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData, getExamDate, to12hr } from '@/lib/timetable';
 import { getAllSubjectStats } from '@/lib/attendance';
+import { messMenu, getTodayFullDay, getMessPreference, type Meal } from '@/lib/messMenu';
 
 const stagger = {
   hidden: { opacity: 0 },
@@ -20,7 +21,20 @@ const Dashboard: React.FC = () => {
   const todayClasses = getTodayClasses();
   const todayDay = getTodayDay();
   const hour = new Date().getHours();
+  const minutes = new Date().getMinutes();
+  const timeInMinutes = hour * 60 + minutes;
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
+  // Mess meal card: 7:30–9:00 → breakfast, 12:00–13:00 → lunch, 18:00–20:00 → dinner
+  const todayFullDay = getTodayFullDay();
+  const todayMeals = messMenu[todayFullDay];
+  const messPref = getMessPreference();
+  const activeMeal: Meal | null = (() => {
+    if (timeInMinutes >= 450 && timeInMinutes < 540) return todayMeals.find(m => m.type === 'breakfast') || null;
+    if (timeInMinutes >= 720 && timeInMinutes < 780) return todayMeals.find(m => m.type === 'lunch') || null;
+    if (timeInMinutes >= 1080 && timeInMinutes < 1200) return todayMeals.find(m => m.type === 'dinner') || null;
+    return null;
+  })();
 
   useEffect(() => {
     requestNotificationPermission();
@@ -112,7 +126,31 @@ const Dashboard: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Attendance Alert */}
+        {/* Now Serving - Mess Meal Card */}
+        {activeMeal && (
+          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
+            <button
+              onClick={() => navigate('/mess-menu')}
+              className="w-full rounded-2xl liquid-glass-card p-4 text-left active:scale-[0.98] transition-transform"
+            >
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="text-[16px]">{activeMeal.emoji}</span>
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Now Serving · {activeMeal.label}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {(messPref === 'nonveg' && activeMeal.nonVegItems ? activeMeal.nonVegItems : activeMeal.items).map((item, i) => (
+                  <span
+                    key={i}
+                    className="text-[11px] text-foreground/80 bg-white/15 dark:bg-white/5 px-2.5 py-1.5 rounded-xl"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </button>
+          </motion.div>
+        )}
+
         {atRisk.length > 0 && (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
             <div className="rounded-2xl liquid-glass-card p-3.5" style={{ borderColor: 'rgba(244,63,94,0.15)' }}>
