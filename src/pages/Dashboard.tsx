@@ -127,29 +127,57 @@ const Dashboard: React.FC = () => {
         </motion.div>
 
         {/* Now Serving - Mess Meal Card */}
-        {activeMeal && (
-          <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
-            <button
-              onClick={() => navigate('/mess-menu')}
-              className="w-full rounded-2xl liquid-glass-card p-4 text-left active:scale-[0.98] transition-transform"
-            >
-              <div className="flex items-center gap-2 mb-2.5">
-                <span className="text-[16px]">{activeMeal.emoji}</span>
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Now Serving · {activeMeal.label}</span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {(messPref === 'nonveg' && activeMeal.nonVegItems ? activeMeal.nonVegItems : activeMeal.items).map((item, i) => (
-                  <span
-                    key={i}
-                    className="text-[11px] text-foreground/80 bg-white/15 dark:bg-white/5 px-2.5 py-1.5 rounded-xl"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </button>
-          </motion.div>
-        )}
+        {activeMeal && (() => {
+          const mealGradients: Record<string, string> = {
+            breakfast: 'from-amber-500/15 via-orange-500/10 to-yellow-500/5 dark:from-amber-500/10 dark:via-orange-500/5 dark:to-transparent',
+            lunch: 'from-emerald-500/15 via-green-500/10 to-teal-500/5 dark:from-emerald-500/10 dark:via-green-500/5 dark:to-transparent',
+            dinner: 'from-indigo-500/15 via-purple-500/10 to-violet-500/5 dark:from-indigo-500/10 dark:via-purple-500/5 dark:to-transparent',
+          };
+          const mealAccents: Record<string, string> = {
+            breakfast: 'text-amber-600 dark:text-amber-400',
+            lunch: 'text-emerald-600 dark:text-emerald-400',
+            dinner: 'text-indigo-600 dark:text-indigo-400',
+          };
+          const mealIcons: Record<string, string> = {
+            breakfast: 'bakery_dining', lunch: 'lunch_dining', dinner: 'dinner_dining',
+          };
+          const items = messPref === 'nonveg' && activeMeal.nonVegItems ? activeMeal.nonVegItems : activeMeal.items;
+          return (
+            <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
+              <button
+                onClick={() => navigate('/mess-menu')}
+                className={`w-full rounded-2xl bg-gradient-to-br ${mealGradients[activeMeal.type]} border border-white/20 dark:border-white/5 p-4 text-left active:scale-[0.98] transition-transform`}
+                style={{ boxShadow: '0 2px 20px -4px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5)' }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="size-8 rounded-xl bg-white/40 dark:bg-white/10 flex items-center justify-center"
+                      style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.6)' }}
+                    >
+                      <span className={`material-symbols-outlined text-[18px] ${mealAccents[activeMeal.type]}`}>{mealIcons[activeMeal.type]}</span>
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-bold text-foreground">{activeMeal.label}</p>
+                      <p className={`text-[9px] font-bold uppercase tracking-widest ${mealAccents[activeMeal.type]}`}>Now Serving</p>
+                    </div>
+                  </div>
+                  <span className="material-symbols-outlined text-[16px] text-muted-foreground/40">chevron_right</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {items.map((item, i) => (
+                    <span
+                      key={i}
+                      className="text-[11px] text-foreground font-medium bg-white/50 dark:bg-white/8 px-2.5 py-1.5 rounded-xl border border-white/30 dark:border-white/5"
+                      style={{ boxShadow: '0 1px 3px -1px rgba(0,0,0,0.04)' }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </button>
+            </motion.div>
+          );
+        })()}
 
         {atRisk.length > 0 && (
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-2">
