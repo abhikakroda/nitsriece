@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/hooks/use-theme';
 import { requestNotificationPermission, isNotificationEnabled } from '@/lib/notifications';
 import { getTimetableData, saveTimetableData, resetTimetableData, getExamDate, setExamDate as saveExamDate, days, type Day, type ClassSlot } from '@/lib/timetable';
+import { getMessPreference, setMessPreference } from '@/lib/messMenu';
+import MessMenuEditor from '@/components/MessMenuEditor';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 14 },
@@ -238,6 +240,8 @@ const Profile: React.FC = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [hideExamCountdown, setHideExamCountdown] = useState(() => localStorage.getItem('hideExamCountdown') !== 'false');
   const [showTimetableEditor, setShowTimetableEditor] = useState(false);
+  const [showMessEditor, setShowMessEditor] = useState(false);
+  const [messPref, setMessPref] = useState(getMessPreference);
   const [examDate, setExamDateState] = useState(getExamDate);
   const [showExamDatePicker, setShowExamDatePicker] = useState(false);
 
@@ -380,6 +384,64 @@ const Profile: React.FC = () => {
               <TimetableEditor onClose={() => setShowTimetableEditor(false)} />
             </div>
           )}
+        </motion.section>
+
+        {/* Mess Menu */}
+        <motion.section variants={fadeUp}>
+          <h3 className="text-muted-foreground text-[10px] font-medium uppercase tracking-widest px-1 mb-2">Mess Menu</h3>
+          <div className="liquid-glass rounded-2xl divide-y divide-white/15 dark:divide-white/5">
+            {/* Default preference toggle */}
+            <button
+              className="flex items-center w-full gap-3 px-4 py-3.5 justify-between"
+              onClick={() => {
+                const next = messPref === 'veg' ? 'nonveg' : 'veg';
+                setMessPreference(next);
+                setMessPref(next);
+              }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-[20px]">{messPref === 'veg' ? '🥬' : '🍗'}</span>
+                <div className="text-left">
+                  <p className="text-foreground text-[13px] font-medium">Default Preference</p>
+                  <p className="text-muted-foreground text-[10px]">{messPref === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}</p>
+                </div>
+              </div>
+              <div className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase tracking-wider ${
+                messPref === 'nonveg'
+                  ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
+                  : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+              }`}>
+                {messPref === 'veg' ? 'Veg' : 'Non-Veg'}
+              </div>
+            </button>
+
+            {/* Edit menu button */}
+            {!showMessEditor ? (
+              <button
+                onClick={() => setShowMessEditor(true)}
+                className="w-full flex items-center gap-3 px-4 py-3.5 justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-muted-foreground text-[20px]">edit_note</span>
+                  <div className="text-left">
+                    <p className="text-foreground text-[13px] font-medium">Edit Menu Items</p>
+                    <p className="text-muted-foreground text-[10px]">Customize daily meals</p>
+                  </div>
+                </div>
+                <span className="material-symbols-outlined text-muted-foreground text-[16px]">chevron_right</span>
+              </button>
+            ) : (
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-foreground text-[13px] font-semibold">Edit Mess Menu</p>
+                  <button onClick={() => setShowMessEditor(false)} className="text-muted-foreground">
+                    <span className="material-symbols-outlined text-[18px]">close</span>
+                  </button>
+                </div>
+                <MessMenuEditor onClose={() => setShowMessEditor(false)} />
+              </div>
+            )}
+          </div>
         </motion.section>
 
         {/* About */}
