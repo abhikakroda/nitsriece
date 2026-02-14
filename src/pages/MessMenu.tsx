@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getMessPreference } from '@/lib/messMenu';
 import { messMenu, fullDays, fullDayNames, getTodayFullDay, getCurrentMealType, type FullDay, type Meal } from '@/lib/messMenu';
 
 const stagger = {
@@ -19,7 +20,8 @@ const mealIcons: Record<string, string> = {
 };
 
 const MealCard: React.FC<{ meal: Meal; isActive: boolean }> = ({ meal, isActive }) => {
-  const [showNonVeg, setShowNonVeg] = useState(false);
+  const defaultPref = getMessPreference();
+  const [showNonVeg, setShowNonVeg] = useState(defaultPref === 'nonveg' && !!meal.nonVegItems);
   const items = showNonVeg && meal.nonVegItems ? meal.nonVegItems : meal.items;
 
   return (
