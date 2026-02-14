@@ -14,9 +14,16 @@ const todayStr = formatLocalDate(new Date());
 
 function getWeekDates(): Record<Day, number> {
   const now = new Date();
-  const dayOfWeek = now.getDay(); // 0=Sun
+  const dayOfWeek = now.getDay(); // 0=Sun, 6=Sat
   const monday = new Date(now);
-  monday.setDate(now.getDate() - ((dayOfWeek === 0 ? 7 : dayOfWeek) - 1));
+  // On weekends, show next week
+  if (dayOfWeek === 0) {
+    monday.setDate(now.getDate() + 1); // Sun → next Mon
+  } else if (dayOfWeek === 6) {
+    monday.setDate(now.getDate() + 2); // Sat → next Mon
+  } else {
+    monday.setDate(now.getDate() - (dayOfWeek - 1));
+  }
   const result: Record<string, number> = {};
   const dayList: Day[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   dayList.forEach((d, i) => {
