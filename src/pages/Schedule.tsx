@@ -3,13 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { markAttendance, getAttendance, getSubjectStats } from '@/lib/attendance';
 import { days, timetableData, dayNames, getTodayDay, type Day } from '@/lib/timetable';
 
-const todayStr = new Date().toISOString().split('T')[0];
+function formatLocalDate(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+const todayStr = formatLocalDate(new Date());
 
 function getWeekDates(): Record<Day, number> {
   const now = new Date();
-  const dayOfWeek = now.getDay();
+  const dayOfWeek = now.getDay(); // 0=Sun
   const monday = new Date(now);
-  monday.setDate(now.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  monday.setDate(now.getDate() - ((dayOfWeek === 0 ? 7 : dayOfWeek) - 1));
   const result: Record<string, number> = {};
   const dayList: Day[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   dayList.forEach((d, i) => {
@@ -31,10 +38,10 @@ const cardVariants = {
 };
 
 const Schedule: React.FC = () => {
-  const [selectedDay, setSelectedDay] = useState<Day>(getTodayDay);
+  const today = getTodayDay(); // null on weekends
+  const [selectedDay, setSelectedDay] = useState<Day>(today || 'Mon');
   const [, forceUpdate] = useState(0);
   const classes = timetableData[selectedDay];
-  const today = getTodayDay();
   const weekDates = useMemo(() => getWeekDates(), []);
 
   const handleAttendance = useCallback((subject: string, status: 'present' | 'absent') => {
@@ -142,7 +149,7 @@ const Schedule: React.FC = () => {
                             )}
                           </div>
 
-                          {selectedDay === today && (
+                          {today && selectedDay === today && (
                             <div className="grid grid-cols-2 gap-2 mt-3">
                               <button
                                 onClick={() => handleAttendance(cls.subject, 'present')}
