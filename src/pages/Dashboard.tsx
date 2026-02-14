@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { requestNotificationPermission, startClassNotifications, stopClassNotifications } from '@/lib/notifications';
-import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData, getExamDate } from '@/lib/timetable';
+import { getTodayClasses, getClassStatus, dayNames, getTodayDay, timetableData, getExamDate, to12hr } from '@/lib/timetable';
 import { getAllSubjectStats } from '@/lib/attendance';
 
 const stagger = {
@@ -193,7 +193,7 @@ const Dashboard: React.FC = () => {
                     }`}
                   >
                     <div className="w-[42px] shrink-0 text-center">
-                      <p className="text-[11px] font-bold text-foreground leading-none">{cls.startTime}</p>
+                      <p className="text-[11px] font-bold text-foreground leading-none">{to12hr(cls.startTime)}</p>
                     </div>
                     <div className="shrink-0">
                       {status === 'current' ? (
@@ -230,12 +230,12 @@ const Dashboard: React.FC = () => {
               <p className="text-[10px] text-muted-foreground">Weekly timetable</p>
             </button>
             <button
-              onClick={() => navigate('/analytics')}
+              onClick={() => navigate('/mess-menu')}
               className="rounded-2xl liquid-glass-card p-4 text-left active:scale-[0.97] transition-transform"
             >
-              <span className="material-symbols-outlined text-muted-foreground text-[20px]">monitoring</span>
-              <p className="font-display font-bold text-foreground text-[13px] mt-2">Analytics</p>
-              <p className="text-[10px] text-muted-foreground">Attendance stats</p>
+              <span className="material-symbols-outlined text-muted-foreground text-[20px]">restaurant</span>
+              <p className="font-display font-bold text-foreground text-[13px] mt-2">Mess Menu</p>
+              <p className="text-[10px] text-muted-foreground">Today's meals</p>
             </button>
           </div>
         </motion.div>

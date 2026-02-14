@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { markAttendance, getAttendance, getSubjectStats } from '@/lib/attendance';
-import { days, timetableData, dayNames, getTodayDay, type Day } from '@/lib/timetable';
+import { days, timetableData, dayNames, getTodayDay, to12hr, type Day } from '@/lib/timetable';
 
 function formatLocalDate(date: Date): string {
   const y = date.getFullYear();
@@ -126,7 +126,7 @@ const Schedule: React.FC = () => {
                       <motion.div key={`${selectedDay}-${idx}`} variants={cardVariants} custom={idx} className="flex gap-3">
                         {/* Time */}
                         <div className="w-[46px] shrink-0 flex flex-col items-center pt-3">
-                          <p className="text-[11px] font-bold text-foreground leading-none">{cls.startTime}</p>
+                          <p className="text-[11px] font-bold text-foreground leading-none">{to12hr(cls.startTime)}</p>
                           <div className="flex flex-col items-center flex-1 py-2">
                             <div className="size-[5px] rounded-full bg-border" />
                             <div className="w-px flex-1 bg-border/50 min-h-[40px]" />
