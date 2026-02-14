@@ -121,3 +121,11 @@ export function getClassStatus(startTime: string, durationMin = 50): 'current' |
   if (currentMin < classStart) return 'upcoming';
   return 'done';
 }
+
+/** Convert "HH:MM" (24h) to "h:MM AM/PM" */
+export function to12hr(time24: string): string {
+  const [h, m] = time24.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2, '0')} ${period}`;
+}

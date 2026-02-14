@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const tabs = [
   { path: '/', icon: 'home', label: 'Home' },
   { path: '/schedule', icon: 'calendar_today', label: 'Schedule' },
-  { path: '/analytics', icon: 'monitoring', label: 'Analytics' },
+  { path: '/mess-menu', icon: 'restaurant', label: 'Mess' },
   { path: '/profile', icon: 'settings', label: 'Settings' },
 ];
 
