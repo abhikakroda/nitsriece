@@ -243,7 +243,6 @@ const Dashboard: React.FC = () => {
           <motion.div variants={fadeUp} className="px-5 md:px-6 pb-6">
             <div className="rounded-2xl liquid-glass-card p-6 text-center">
               <p className="text-muted-foreground text-[13px]">No classes today</p>
-              <p className="text-muted-foreground/50 text-[11px] mt-1">Enjoy your {dayNames[todayDay]}</p>
             </div>
           </motion.div>
         ) : (
