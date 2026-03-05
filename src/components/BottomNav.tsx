@@ -68,7 +68,6 @@ const BottomNav: React.FC = () => {
       {/* Desktop sidebar */}
       <nav className="hidden lg:flex fixed left-0 top-0 bottom-0 z-50 w-[220px] flex-col liquid-glass border-r border-white/20 dark:border-white/5 py-6 px-3">
         <div className="flex items-center gap-2.5 px-3 mb-8">
-          <img src="/pwa-192x192.png" alt="Time Table" className="size-8 rounded-xl" />
           <div>
             <h2 className="font-display text-foreground text-[14px] font-bold leading-tight">Time Table</h2>
             <p className="text-muted-foreground text-[9px] font-bold tracking-widest uppercase">ECE • Sec B</p>

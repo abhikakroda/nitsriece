@@ -495,7 +495,6 @@ const Profile: React.FC = () => {
         <motion.section variants={fadeUp}>
           <SectionHeader title="About" />
           <div className="liquid-glass-card rounded-2xl px-4 py-4 flex items-center gap-3.5">
-            <img src="/pwa-192x192.png" alt="Time Table" className="size-11 rounded-xl" />
             <div>
               <p className="text-foreground text-[13px] font-semibold">Time Table</p>
               <p className="text-muted-foreground text-[10px] mt-0.5">ECE Section B • NIT Srinagar</p>
