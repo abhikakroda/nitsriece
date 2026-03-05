@@ -1,7 +1,6 @@
-# NIT Sri Lanka ICE Time Table
+# Time Table
 
-A Progressive Web App (PWA) for managing your college timetable and tracking attendance at NIT Sri Lanka, Department of Information and Communication Engineering (ICE).
-
+A Progressive Web App (PWA) for managing your college timetable and tracking attendance at NIT Sri .
 ## Features
 
 - View and manage your weekly class timetable
