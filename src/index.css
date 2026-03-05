@@ -366,3 +366,27 @@ html {
   background: hsl(var(--primary) / 0.15);
   color: hsl(var(--primary));
 }
+
+/* Focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.6);
+  outline-offset: 2px;
+}
+
+/* Input / select native styling reset for dark mode */
+input[type="date"],
+input[type="time"],
+select {
+  color-scheme: light dark;
+}
+
+/* Tap highlight already removed in body, reinforce */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Safe area padding helper */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
