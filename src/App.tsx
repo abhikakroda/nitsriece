@@ -10,6 +10,7 @@ import AttendanceAnalytics from "./pages/AttendanceAnalytics";
 import MessMenu from "./pages/MessMenu";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
+import "./App.css";
 
 const AppRoutes = () => (
   <Routes>

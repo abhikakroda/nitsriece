@@ -69,11 +69,54 @@ function notifyMess() {
   messListeners.forEach(fn => fn());
 }
 
+function isFullDay(value: string): value is FullDay {
+  return fullDays.includes(value as FullDay);
+}
+
+function isMealType(value: unknown): value is MealType {
+  return value === 'breakfast' || value === 'lunch' || value === 'dinner';
+}
+
+function isMeal(value: unknown): value is Meal {
+  if (!value || typeof value !== 'object') return false;
+  const meal = value as Partial<Meal>;
+  const hasRequired = isMealType(meal.type)
+    && typeof meal.label === 'string'
+    && typeof meal.emoji === 'string'
+    && Array.isArray(meal.items)
+    && meal.items.every(item => typeof item === 'string');
+
+  if (!hasRequired) return false;
+  if (meal.nonVegItems === undefined) return true;
+  return Array.isArray(meal.nonVegItems) && meal.nonVegItems.every(item => typeof item === 'string');
+}
+
+function sanitizeMessMenuData(value: unknown): Record<FullDay, Meal[]> | null {
+  if (!value || typeof value !== 'object') return null;
+  const input = value as Record<string, unknown>;
+  const sanitized: Record<FullDay, Meal[]> = {
+    Mon: [], Tue: [], Wed: [], Thu: [], Fri: [], Sat: [], Sun: [],
+  };
+
+  for (const [day, meals] of Object.entries(input)) {
+    if (!isFullDay(day) || !Array.isArray(meals)) continue;
+    sanitized[day] = meals.filter(isMeal);
+  }
+
+  return sanitized;
+}
+
 export function getMessMenuData(): Record<FullDay, Meal[]> {
   try {
     const stored = localStorage.getItem(MESS_MENU_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch {}
+    if (!stored) return JSON.parse(JSON.stringify(defaultMessMenu));
+    const parsed = JSON.parse(stored) as unknown;
+    const sanitized = sanitizeMessMenuData(parsed);
+    if (sanitized) return sanitized;
+    console.warn('Invalid mess menu data in localStorage, resetting to defaults.');
+  } catch (error) {
+    console.error('Failed to parse mess menu data from localStorage.', error);
+  }
   return JSON.parse(JSON.stringify(defaultMessMenu));
 }
 

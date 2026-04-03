@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Timetable" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">#F7F9FE</item>
+    </style>
+
+    <!-- Fallback starting theme for pre-Android 12. -->
+    <style name="Theme.Timetable.Starting" parent="Theme.Timetable">
+        <item name="android:windowBackground">#F7F9FE</item>
+    </style>
+</resources>

@@ -59,11 +59,46 @@ function notify() {
   listeners.forEach(fn => fn());
 }
 
+function isValidDay(value: string): value is Day {
+  return days.includes(value as Day);
+}
+
+function isClassSlot(value: unknown): value is ClassSlot {
+  if (!value || typeof value !== 'object') return false;
+  const slot = value as Partial<ClassSlot>;
+  return typeof slot.subject === 'string'
+    && typeof slot.time === 'string'
+    && typeof slot.startTime === 'string'
+    && typeof slot.room === 'string'
+    && typeof slot.icon === 'string'
+    && typeof slot.iconBg === 'string'
+    && typeof slot.iconColor === 'string';
+}
+
+function sanitizeTimetableData(value: unknown): Record<Day, ClassSlot[]> | null {
+  if (!value || typeof value !== 'object') return null;
+  const input = value as Record<string, unknown>;
+  const sanitized: Record<Day, ClassSlot[]> = { Mon: [], Tue: [], Wed: [], Thu: [], Fri: [] };
+
+  for (const [day, slots] of Object.entries(input)) {
+    if (!isValidDay(day) || !Array.isArray(slots)) continue;
+    sanitized[day] = slots.filter(isClassSlot);
+  }
+
+  return sanitized;
+}
+
 export function getTimetableData(): Record<Day, ClassSlot[]> {
   try {
     const stored = localStorage.getItem(TIMETABLE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch {}
+    if (!stored) return defaultTimetable;
+    const parsed = JSON.parse(stored) as unknown;
+    const sanitized = sanitizeTimetableData(parsed);
+    if (sanitized) return sanitized;
+    console.warn('Invalid timetable data in localStorage, resetting to defaults.');
+  } catch (error) {
+    console.error('Failed to parse timetable data from localStorage.', error);
+  }
   return defaultTimetable;
 }
 
